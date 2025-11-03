@@ -7,11 +7,11 @@
 	PORT=port(Normally 5000)
 
 3. cd to folder with command prompt and enter 3 commands:
-	npm install mongodb
-	npm init -y
-	npm install express mongoose dotenv cors
+	- npm install mongodb
+	- npm init -y
+	- npm install express mongoose dotenv cors
 
 4. run the server in command prompt:
-	node server.js
+	- node server.js
 
 5. From here on, You'll need to open `http://localhost:PORT/` to start it.
