@@ -10,3 +10,8 @@ footer {
     background-color: black;
     color: white
     }
+.fab {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+}
