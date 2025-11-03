@@ -7,7 +7,7 @@
 	PORT=port(Normally 5000)
 
 3. cd to folder with command prompt and enter 3 commands:
-	- npm install mongodb
+	- npm install mongodb (Only need if you have never used MongoDB, otherwise skip)
 	- npm init -y
 	- npm install express mongoose dotenv cors
 
