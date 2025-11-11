@@ -36,68 +36,35 @@
                       <a class="nav-link" href="about.html" style="font-size: x-large">About</a>
                     </li>
                   </ul>
+                  
+                  <div class="profile-container ms-3">
+                    <div class="profile-icon" id="profileIcon" onclick="toggleProfileDropdown()">
+                      G
+                    </div>
+                    <div class="profile-dropdown" id="profileDropdown">
+                      <h5>Profile</h5>
+                      <div class="profile-info">
+                        <label>Username:</label>
+                        <p id="profileUsername">Guest</p>
+                      </div>
+                      <div class="profile-info">
+                        <label>Email:</label>
+                        <p id="profileEmail">guest@squadsync.com</p>
+                      </div>
+                      <div class="profile-info">
+                        <label>Favorite Team:</label>
+                        <p id="profileTeam">Not set</p>
+                      </div>
+                      <div class="profile-info">
+                        <label>Favorite Sport:</label>
+                        <p id="profileSport">Not set</p>
+                      </div>
+                      <a href="profile.html" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </nav>
       </header>
       <p>
-         Welcome to the Stats Page! Here you can find information about your statistics! 
-         Stay tuned for the latest updates and announcements regarding stats!
-      </p>
-      <h2>Tournaments</h2>
-      <label for="Tsports">Choose your Tournament sport:</label>
-      <select id="sports" name="selected_sport">
-        <option value="">--Please choose an option--</option>
-        <option value="Baseball">Baseball</option>
-        <option value="Basketball">Basketball</option>
-        <option value="Hockey">Hockey</option>
-        <option value="Football">Football</option>
-        <option value="Soccer">Soccer</option>
-        <option value="Tennis">Tennis</option>
-      </select>
-
-  <table border="1">
-    <tr>
-      <th>Team Name</th>
-      <th>Tournaments Played</th>
-      <th>Tournaments Won</th>
-      <th>Tournaments Lost</th>
-    </tr>
-    <tr>
-      <td>N/A</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-  </table>
-  <h2>Leagues</h2>
-  <label for="Lsports">Choose your League:</label>
-      <select id="sports" name="selected_sport">
-      <option value="">--Please choose an option--</option>
-      <option value="Baseball">Baseball</option>
-      <option value="Basketball">Basketball</option>
-      <option value="Hockey">Hockey</option>
-      <option value="Football">Football</option>
-      <option value="Soccer">Soccer</option>
-      <option value="Tennis">Tennis</option>
-      </select>
-  <table border="1">
-    <tr>
-      <th>Team Name</th>
-      <th>Leagues Played</th>
-      <th>Wins</th>
-      <th>Losses</th>
-    </tr>
-    <tr>
-      <td>N/A</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-  </table>
-  <footer style="text-align: center; background-color: black; color: white">
-            <p>&copy; 2024 Squad Sync. All rights reserved.</p>
-        </footer>
-  </body>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-</html>
+         Welcome to the Stats Page! Here you can find information about your statistics!
