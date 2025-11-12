@@ -18,13 +18,36 @@ async function loadLeagues() {
         leagues.forEach(l => {
             const card = document.createElement('div');
             card.className = 'col-md-4';
+            
+            const startDate = new Date(l.startDate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            const endDate = new Date(l.endDate).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            const formatTime = (time) => {
+                const [hours, minutes] = time.split(':');
+                const hour = parseInt(hours);
+                const ampm = hour >= 12 ? 'PM' : 'AM';
+                const displayHour = hour % 12 || 12;
+                return `${displayHour}:${minutes} ${ampm}`;
+            };
+            
             card.innerHTML = `
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">${l.title}</h5>
-                        <p class="card-text"><strong>Date:</strong> ${l.date}</p>
-                        <p class="card-text"><strong>Time:</strong> ${l.time}</p>
+                        <h5 class="card-title">${l.leagueName}</h5>
+                        <p class="card-text"><strong>Sport:</strong> ${l.sportType}</p>
+                        <p class="card-text"><strong>Start Date:</strong> ${startDate}</p>
+                        <p class="card-text"><strong>End Date:</strong> ${endDate}</p>
+                        <p class="card-text"><strong>Game Times:</strong> ${formatTime(l.startTime)} - ${formatTime(l.endTime)}</p>
                         <p class="card-text"><strong>Location:</strong> ${l.location}</p>
+                        <p class="card-text"><strong>Description:</strong> ${l.description}</p>
                     </div>
                 </div>
             `;
