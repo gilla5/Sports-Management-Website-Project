@@ -19,11 +19,33 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-const baseEventSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  date: { type: String, required: true },
-  time: { type: String, required: true },
+const leagueSchema = new mongoose.Schema({
+  leagueName: { type: String, required: true },
+  sportType: { type: String, required: true },
+  startDate: { type: String, required: true },
+  endDate: { type: String, required: true },
+  startTime: { type: String, required: true },
+  endTime: { type: String, required: true },
   location: { type: String, required: true },
+  description: { type: String, required: true },
+}, { timestamps: true });
+
+const tournamentSchema = new mongoose.Schema({
+  tournamentName: { type: String, required: true },
+  sportType: { type: String, required: true },
+  tournamentType: { type: String, required: true },
+  startDate: { type: String, required: true },
+  endDate: { type: String, required: true },
+  startTime: { type: String, required: true },
+  endTime: { type: String, required: true },
+  location: { type: String, required: true },
+  description: { type: String, required: true },
+}, { timestamps: true });
+
+const teamSchema = new mongoose.Schema({
+  leagueId: { type: mongoose.Schema.Types.ObjectId, ref: 'League', required: true },
+  teamName: { type: String, required: true },
+  players: [{ type: String, required: true }],
 }, { timestamps: true });
 
 const userSchema = new mongoose.Schema({
@@ -33,8 +55,9 @@ const userSchema = new mongoose.Schema({
   favoriteSport: { type: String, default: '' },
 }, { timestamps: true });
 
-const League = mongoose.model('League', baseEventSchema);
-const Tournament = mongoose.model('Tournament', baseEventSchema);
+const League = mongoose.model('League', leagueSchema);
+const Tournament = mongoose.model('Tournament', tournamentSchema);
+const Team = mongoose.model('Team', teamSchema);
 const User = mongoose.model('User', userSchema);
 
 app.post('/api/users', async (req, res) => {
@@ -96,6 +119,18 @@ app.get('/api/leagues', async (req, res) => {
   }
 });
 
+app.get('/api/leagues/:id', async (req, res) => {
+  try {
+    const league = await League.findById(req.params.id);
+    if (!league) {
+      return res.status(404).json({ message: 'League not found' });
+    }
+    res.json(league);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching league' });
+  }
+});
+
 app.post('/api/tournaments', async (req, res) => {
   try {
     const tournament = new Tournament(req.body);
@@ -113,6 +148,59 @@ app.get('/api/tournaments', async (req, res) => {
     res.json(tournaments);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching tournaments' });
+  }
+});
+
+app.get('/api/tournaments/:id', async (req, res) => {
+  try {
+    const tournament = await Tournament.findById(req.params.id);
+    if (!tournament) {
+      return res.status(404).json({ message: 'Tournament not found' });
+    }
+    res.json(tournament);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching tournament' });
+  }
+});
+
+app.post('/api/teams', async (req, res) => {
+  try {
+    const team = new Team(req.body);
+    await team.save();
+    res.status(201).json({ message: 'Team created successfully', team });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error creating team' });
+  }
+});
+
+app.get('/api/teams', async (req, res) => {
+  try {
+    const teams = await Team.find().populate('leagueId');
+    res.json(teams);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching teams' });
+  }
+});
+
+app.get('/api/teams/:id', async (req, res) => {
+  try {
+    const team = await Team.findById(req.params.id).populate('leagueId');
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    res.json(team);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching team' });
+  }
+});
+
+app.get('/api/leagues/:leagueId/teams', async (req, res) => {
+  try {
+    const teams = await Team.find({ leagueId: req.params.leagueId });
+    res.json(teams);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching teams for league' });
   }
 });
 
