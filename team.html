@@ -66,35 +66,63 @@
               </div>
             </nav>
         </header>
+        
         <main class="container my-4">
           <div class="fab-div">
             <a id="createLeagueBtn" class="btn btn-primary fab">Create Team</a>
           </div>
-        <br>
-        <p>
-           Welcome to the Teams Page! Here you can find information about various teams! 
-           Stay tuned for the latest updates and announcements regarding teams!
-        </p>
-        <h3>Team Rosters</h3>
-        <label for="Team">Choose Team to View:</label>
-      <select id="sports" name="selected_sport">
-        <option value="Baseball">Team 1</option>
-      </select>
-    <h4>Team 1: N/A</h4>
-    <table border="1">
-      <tr>
-        <th>Player Name</th>
-        <th>Position</th>
-        <th>Jersey Number</th>
-        <th>Age</th>
-      </tr>
-      <tr><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
-    </table>
-    </main>
+          <br>
+          
+          <p>
+             Welcome to the Teams Page! Here you can find information about various teams! 
+             Stay tuned for the latest updates and announcements regarding teams!
+          </p>
+          
+          <h3>Team Rosters</h3>
+          
+          <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+              <label for="leagueSelect" class="form-label">Choose League:</label>
+              <select id="leagueSelect" name="selected_league" class="form-select">
+                <option value="">Loading leagues...</option>
+              </select>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label for="teamSelect" class="form-label">Choose Team:</label>
+              <select id="teamSelect" name="selected_team" class="form-select" disabled>
+                <option value="">Select a league first</option>
+              </select>
+            </div>
+          </div>
+          
+          <h4 id="teamHeader">Select a team to view roster</h4>
+          
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+              <thead class="table-dark">
+                <tr>
+                  <th>Player Name</th>
+                  <th>Position</th>
+                  <th>Jersey Number</th>
+                  <th>Age</th>
+                </tr>
+              </thead>
+              <tbody id="teamRosterBody">
+                <tr>
+                  <td colspan="4" class="text-center text-muted">No team selected</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+        
         <footer style="text-align: center; background-color: black; color: white">
             <p>&copy; 2024 Squad Sync. All rights reserved.</p>
         </footer>
+        
         <script src="profile.js"></script>
+        <script src="team.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     </body>
 </html>
