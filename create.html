@@ -11,42 +11,28 @@
         <h1 class="text-center">Create New Event</h1>
 
         <form id="addEventForm">
-            <div class="mb-3">
-                <label for="title" class="form-label">Type of Sport</label>
-                <input type="text" class="form-control" id="title" required>
-            </div>
-
-            <fieldset style="border: 1px solid #ccc; padding: 10px; border-radius: 8px;">
+            <fieldset style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; margin-bottom: 20px;">
                 <legend>Select Type</legend>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="eventType" id="tournament" value="Tournament" required>
+                    <label for="tournament" class="form-check-label">Tournament</label>
+                </div>
                 <div class="form-check">
                     <input type="radio" class="form-check-input" name="eventType" id="league" value="League" required>
                     <label for="league" class="form-check-label">League</label>
                 </div>
                 <div class="form-check">
-                    <input type="radio" class="form-check-input" name="eventType" id="tournament" value="Tournament" required>
-                    <label for="tournament" class="form-check-label">Tournament</label>
+                    <input type="radio" class="form-check-input" name="eventType" id="team" value="Team" required>
+                    <label for="team" class="form-check-label">Team</label>
                 </div>
             </fieldset>
 
-            <div class="mb-3">
-                <label for="date" class="form-label">Event Date</label>
-                <input type="date" class="form-control" id="date" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="time" class="form-label">Event Time</label>
-                <input type="time" class="form-control" id="time" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="location" class="form-label">Event Location</label>
-                <input type="text" class="form-control" id="location" required>
-            </div>
+            <div id="dynamicFormContent"></div>
 
             <button type="submit" class="btn btn-primary">Create Event</button>
         </form>
 
-        <a href="index.html" class="btn btn-secondary mt-3">Home Page</a>
+        <button id="backBtn" class="btn btn-secondary mt-3">Go Back</button>
     </div>
 
     <script src="create.js"></script>
