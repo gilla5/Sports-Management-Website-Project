@@ -73,7 +73,7 @@
       </p>
       <h2>Tournaments</h2>
       <label for="Tsports">Choose your Tournament sport:</label>
-      <select id="sports" name="selected_sport">
+      <select id="Tsports" name="selected_sport" class="form-select mb-3">
         <option value="">--Please choose an option--</option>
         <option value="Baseball">Baseball</option>
         <option value="Basketball">Basketball</option>
@@ -83,49 +83,64 @@
         <option value="Tennis">Tennis</option>
       </select>
 
-  <table border="1">
-    <tr>
-      <th>Team Name</th>
-      <th>Tournaments Played</th>
-      <th>Tournaments Won</th>
-      <th>Tournaments Lost</th>
-    </tr>
-    <tr>
-      <td>N/A</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-  </table>
-  <h2>Leagues</h2>
-  <label for="Lsports">Choose your League:</label>
-      <select id="sports" name="selected_sport">
-      <option value="">--Please choose an option--</option>
-      <option value="Baseball">Baseball</option>
-      <option value="Basketball">Basketball</option>
-      <option value="Hockey">Hockey</option>
-      <option value="Football">Football</option>
-      <option value="Soccer">Soccer</option>
-      <option value="Tennis">Tennis</option>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+            <tr>
+              <th>Team Name</th>
+              <th>Tournaments Played</th>
+              <th>Tournaments Won</th>
+              <th>Tournaments Lost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>N/A</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Leagues</h2>
+      <label for="Lsports">Choose your League:</label>
+      <select id="Lsports" name="selected_sport" class="form-select mb-3">
+        <option value="">--Please choose an option--</option>
+        <option value="Baseball">Baseball</option>
+        <option value="Basketball">Basketball</option>
+        <option value="Hockey">Hockey</option>
+        <option value="Football">Football</option>
+        <option value="Soccer">Soccer</option>
+        <option value="Tennis">Tennis</option>
       </select>
-  <table border="1">
-    <tr>
-      <th>Team Name</th>
-      <th>Leagues Played</th>
-      <th>Wins</th>
-      <th>Losses</th>
-    </tr>
-    <tr>
-      <td>N/A</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-  </table>
-</main>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+            <tr>
+              <th>Team Name</th>
+              <th>Leagues Played</th>
+              <th>Wins</th>
+              <th>Losses</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>N/A</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
       <footer style="text-align: center; background-color: black; color: white">
           <p>&copy; 2024 Squad Sync. All rights reserved.</p>
       </footer>
       <script src="profile.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   </body>
 </html>
