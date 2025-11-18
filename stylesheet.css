@@ -22,7 +22,6 @@ body::before {
     pointer-events: none;
 }
 
-/* Improved text spacing */
 p {
     margin-bottom: 1.5rem;
     line-height: 1.8;
@@ -76,7 +75,6 @@ footer {
     min-width: 150px;
 }
 
-/* Accessible color scheme */
 .navbar {
     background-color: #fef8e7 !important;
     border-bottom: 3px solid #2c3e50 !important;
@@ -216,7 +214,6 @@ footer {
     margin-top: 10px;
 }
 
-/* Home page specific styles */
 .home-section {
     margin-bottom: 3rem;
 }
