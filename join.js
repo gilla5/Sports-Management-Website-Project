@@ -1,4 +1,3 @@
-// Get current user from profile
 function getCurrentUser() {
     const userStr = localStorage.getItem('squadSyncCurrentUser');
     if (!userStr) {
@@ -10,7 +9,6 @@ function getCurrentUser() {
     return JSON.parse(userStr);
 }
 
-// Join Team Function
 async function joinTeam(teamId, teamName) {
     const user = getCurrentUser();
     
@@ -27,17 +25,14 @@ async function joinTeam(teamId, teamName) {
     }
 
     try {
-        // Get current team data
         const response = await fetch(`/api/teams/${teamId}`);
         const team = await response.json();
 
-        // Check if player already exists
         if (team.players.includes(playerName.trim())) {
             alert('A player with this name is already on the team!');
             return;
         }
 
-        // Add player to team
         const updatedPlayers = [...team.players, playerName.trim()];
         
         const updateResponse = await fetch(`/api/teams/${teamId}`, {
@@ -51,7 +46,7 @@ async function joinTeam(teamId, teamName) {
 
         if (updateResponse.ok) {
             alert(`Successfully joined ${teamName}!`);
-            // Redirect to My Events page
+            
             window.location.href = 'myevents.html';
         } else {
             alert('Failed to join team. Please try again.');
@@ -62,7 +57,6 @@ async function joinTeam(teamId, teamName) {
     }
 }
 
-// Join League Function
 async function joinLeague(leagueId, leagueName) {
     const user = getCurrentUser();
     
@@ -73,20 +67,16 @@ async function joinLeague(leagueId, leagueName) {
     }
 
     try {
-        // Get current league data
         const response = await fetch(`/api/leagues/${leagueId}`);
         const league = await response.json();
 
-        // Initialize participants array if it doesn't exist
         const participants = league.participants || [];
 
-        // Check if user already joined
         if (participants.some(p => p.username === user.username)) {
             alert('You have already joined this league!');
             return;
         }
 
-        // Add user to participants
         const updatedParticipants = [...participants, {
             username: user.username,
             email: user.email,
@@ -114,7 +104,6 @@ async function joinLeague(leagueId, leagueName) {
     }
 }
 
-// Join Tournament Function
 async function joinTournament(tournamentId, tournamentName) {
     const user = getCurrentUser();
     
@@ -125,26 +114,21 @@ async function joinTournament(tournamentId, tournamentName) {
     }
 
     try {
-        // Get current tournament data
         const response = await fetch(`/api/tournaments/${tournamentId}`);
         const tournament = await response.json();
 
-        // Initialize participants array if it doesn't exist
         const participants = tournament.participants || [];
 
-        // Check if user already joined
         if (participants.some(p => p.username === user.username)) {
             alert('You have already joined this tournament!');
             return;
         }
 
-        // Check if tournament is full
         if (tournament.numTeams && participants.length >= tournament.numTeams) {
             alert('This tournament is full!');
             return;
         }
 
-        // Add user to participants
         const updatedParticipants = [...participants, {
             username: user.username,
             email: user.email,
@@ -172,7 +156,6 @@ async function joinTournament(tournamentId, tournamentName) {
     }
 }
 
-// Check if user has joined
 function hasUserJoined(participants, username) {
     if (!participants || participants.length === 0) return false;
     return participants.some(p => p.username === username);
