@@ -2,6 +2,37 @@ document.getElementById("createLeagueBtn").addEventListener("click", () => {
     window.location.href = "/create.html";
 });
 
+function formatTimeTo12Hour(time) {
+    if (!time) return 'N/A';
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${ampm}`;
+}
+
+async function deleteLeague(id, leagueName) {
+    if (!confirm(`Are you sure you want to delete "${leagueName}"? This action cannot be undone.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/leagues/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert('League deleted successfully!');
+            loadLeagues(); // Reload the list
+        } else {
+            alert('Failed to delete league.');
+        }
+    } catch (err) {
+        console.error('Error deleting league:', err);
+        alert('An error occurred while deleting the league.');
+    }
+}
+
 async function loadLeagues() {
     try {
         const response = await fetch('/api/leagues');
@@ -30,13 +61,7 @@ async function loadLeagues() {
                 day: 'numeric' 
             });
             
-            const formatTime = (time) => {
-                const [hours, minutes] = time.split(':');
-                const hour = parseInt(hours);
-                const ampm = hour >= 12 ? 'PM' : 'AM';
-                const displayHour = hour % 12 || 12;
-                return `${displayHour}:${minutes} ${ampm}`;
-            };
+            const participantCount = l.participants ? l.participants.length : 0;
             
             card.innerHTML = `
                 <div class="card h-100">
@@ -45,13 +70,37 @@ async function loadLeagues() {
                         <p class="card-text"><strong>Sport:</strong> ${l.sportType}</p>
                         <p class="card-text"><strong>Start Date:</strong> ${startDate}</p>
                         <p class="card-text"><strong>End Date:</strong> ${endDate}</p>
-                        <p class="card-text"><strong>Game Times:</strong> ${formatTime(l.startTime)} - ${formatTime(l.endTime)}</p>
+                        <p class="card-text"><strong>Game Times:</strong> ${formatTimeTo12Hour(l.startTime)} - ${formatTimeTo12Hour(l.endTime)}</p>
                         <p class="card-text"><strong>Location:</strong> ${l.location}</p>
                         <p class="card-text"><strong>Description:</strong> ${l.description}</p>
+                        <p class="card-text"><strong>Participants:</strong> ${participantCount}</p>
+                        <div class="mt-3">
+                            <button class="btn btn-sm btn-success join-btn" data-id="${l._id}" data-name="${l.leagueName}">Join League</button>
+                            <a href="edit.html?type=league&id=${l._id}" class="btn btn-sm btn-primary">Edit</a>
+                            <button class="btn btn-sm btn-danger delete-btn" data-id="${l._id}" data-name="${l.leagueName}">Delete</button>
+                        </div>
                     </div>
                 </div>
             `;
             container.appendChild(card);
+        });
+
+        // Add join button listeners
+        document.querySelectorAll('.join-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.target.getAttribute('data-id');
+                const name = e.target.getAttribute('data-name');
+                joinLeague(id, name);
+            });
+        });
+
+        // Add delete button listeners
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.target.getAttribute('data-id');
+                const name = e.target.getAttribute('data-name');
+                deleteLeague(id, name);
+            });
         });
     } catch (err) {
         console.error('Error loading leagues:', err);

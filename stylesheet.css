@@ -1,11 +1,12 @@
 body {
-    background-color: beige;
+    background-color: #f5f5dc;
     background-image: url('./images/sportBackground.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     position: relative;
+    line-height: 1.8;
 }
 
 body::before {
@@ -15,10 +16,40 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: beige;
-    opacity: 0.7;
+    background-color: #f5f5dc;
+    opacity: 0.85;
     z-index: -1;
     pointer-events: none;
+}
+
+/* Improved text spacing */
+p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+.container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.card {
+    margin-bottom: 2rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-text {
+    margin-bottom: 1rem;
+    line-height: 1.6;
 }
 
 footer {
@@ -28,15 +59,92 @@ footer {
     width: 100%;
     height: 6%;
     text-align: center;
-    background-color: black;
-    color: white
+    background-color: #1a1a1a;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .fab-div{
     text-align: right;
+    margin-bottom: 1.5rem;
 }
+
 .fab {
     width: 25%;
+    min-width: 150px;
+}
+
+/* Accessible color scheme */
+.navbar {
+    background-color: #fef8e7 !important;
+    border-bottom: 3px solid #2c3e50 !important;
+}
+
+.nav-link {
+    color: #2c3e50 !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #1a252f !important;
+    text-decoration: underline;
+}
+
+.nav-link.disabled {
+    color: #5d3fd3 !important;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #2874a6;
+    border-color: #2874a6;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #1f5c87;
+    border-color: #1f5c87;
+}
+
+.btn-secondary {
+    background-color: #5d6d7e;
+    border-color: #5d6d7e;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #4a5568;
+    border-color: #4a5568;
+}
+
+.btn-success {
+    background-color: #229954;
+    border-color: #229954;
+    color: #ffffff;
+}
+
+.btn-info {
+    background-color: #1f618d;
+    border-color: #1f618d;
+    color: #ffffff;
+}
+
+.card {
+    border: 2px solid #2c3e50;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.card-title {
+    color: #1a252f;
+    font-weight: bold;
+}
+
+.table-dark {
+    background-color: #2c3e50;
+    color: #ffffff;
 }
 
 .profile-container {
@@ -48,19 +156,20 @@ footer {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #6c757d;
+    background-color: #5d6d7e;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px;
     cursor: pointer;
-    border: 2px solid #495057;
+    border: 3px solid #2c3e50;
     transition: background-color 0.3s;
+    font-weight: bold;
 }
 
 .profile-icon:hover {
-    background-color: #5a6268;
+    background-color: #4a5568;
 }
 
 .profile-dropdown {
@@ -70,10 +179,11 @@ footer {
     top: 60px;
     background-color: white;
     min-width: 250px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
     z-index: 1000;
     border-radius: 8px;
     padding: 15px;
+    border: 2px solid #2c3e50;
 }
 
 .profile-dropdown.show {
@@ -82,7 +192,7 @@ footer {
 
 .profile-dropdown h5 {
     margin-bottom: 15px;
-    color: #333;
+    color: #1a252f;
     border-bottom: 2px solid #dee2e6;
     padding-bottom: 10px;
 }
@@ -93,15 +203,35 @@ footer {
 
 .profile-dropdown .profile-info label {
     font-weight: bold;
-    color: #495057;
+    color: #2c3e50;
 }
 
 .profile-dropdown .profile-info p {
     margin: 5px 0;
-    color: #6c757d;
+    color: #5d6d7e;
 }
 
 .profile-dropdown .btn {
     width: 100%;
     margin-top: 10px;
+}
+
+/* Home page specific styles */
+.home-section {
+    margin-bottom: 3rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.action-buttons .btn {
+    flex: 1;
+    min-width: 200px;
+    padding: 1rem;
+    font-size: 1.1rem;
 }

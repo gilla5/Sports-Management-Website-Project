@@ -27,19 +27,34 @@ const leagueSchema = new mongoose.Schema({
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },
   location: { type: String, required: true },
+  coordinates: { type: Object, required: false },
   description: { type: String, required: true },
+  participants: [{ 
+    username: String, 
+    email: String, 
+    joinedAt: String 
+  }]
 }, { timestamps: true });
 
 const tournamentSchema = new mongoose.Schema({
   tournamentName: { type: String, required: true },
   sportType: { type: String, required: true },
   tournamentType: { type: String, required: true },
+  numTeams: { type: Number, required: false },
+  bracketGenerated: { type: Boolean, default: false },
+  bracket: { type: Object, default: {} },
   startDate: { type: String, required: true },
   endDate: { type: String, required: true },
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },
   location: { type: String, required: true },
+  coordinates: { type: Object, required: false },
   description: { type: String, required: true },
+  participants: [{ 
+    username: String, 
+    email: String, 
+    joinedAt: String 
+  }]
 }, { timestamps: true });
 
 const teamSchema = new mongoose.Schema({
@@ -60,6 +75,7 @@ const Tournament = mongoose.model('Tournament', tournamentSchema);
 const Team = mongoose.model('Team', teamSchema);
 const User = mongoose.model('User', userSchema);
 
+// User routes
 app.post('/api/users', async (req, res) => {
   try {
     const user = new User(req.body);
@@ -99,6 +115,7 @@ app.put('/api/users/:username', async (req, res) => {
   }
 });
 
+// League routes
 app.post('/api/leagues', async (req, res) => {
   try {
     const league = new League(req.body);
@@ -131,6 +148,36 @@ app.get('/api/leagues/:id', async (req, res) => {
   }
 });
 
+app.put('/api/leagues/:id', async (req, res) => {
+  try {
+    const league = await League.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!league) {
+      return res.status(404).json({ message: 'League not found' });
+    }
+    res.json({ message: 'League updated successfully', league });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error updating league' });
+  }
+});
+
+app.delete('/api/leagues/:id', async (req, res) => {
+  try {
+    const league = await League.findByIdAndDelete(req.params.id);
+    if (!league) {
+      return res.status(404).json({ message: 'League not found' });
+    }
+    res.json({ message: 'League deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting league' });
+  }
+});
+
+// Tournament routes
 app.post('/api/tournaments', async (req, res) => {
   try {
     const tournament = new Tournament(req.body);
@@ -163,6 +210,36 @@ app.get('/api/tournaments/:id', async (req, res) => {
   }
 });
 
+app.put('/api/tournaments/:id', async (req, res) => {
+  try {
+    const tournament = await Tournament.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!tournament) {
+      return res.status(404).json({ message: 'Tournament not found' });
+    }
+    res.json({ message: 'Tournament updated successfully', tournament });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error updating tournament' });
+  }
+});
+
+app.delete('/api/tournaments/:id', async (req, res) => {
+  try {
+    const tournament = await Tournament.findByIdAndDelete(req.params.id);
+    if (!tournament) {
+      return res.status(404).json({ message: 'Tournament not found' });
+    }
+    res.json({ message: 'Tournament deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting tournament' });
+  }
+});
+
+// Team routes
 app.post('/api/teams', async (req, res) => {
   try {
     const team = new Team(req.body);
@@ -192,6 +269,35 @@ app.get('/api/teams/:id', async (req, res) => {
     res.json(team);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching team' });
+  }
+});
+
+app.put('/api/teams/:id', async (req, res) => {
+  try {
+    const team = await Team.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    res.json({ message: 'Team updated successfully', team });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error updating team' });
+  }
+});
+
+app.delete('/api/teams/:id', async (req, res) => {
+  try {
+    const team = await Team.findByIdAndDelete(req.params.id);
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    res.json({ message: 'Team deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting team' });
   }
 });
 

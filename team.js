@@ -5,6 +5,33 @@ document.getElementById("createLeagueBtn").addEventListener("click", () => {
 let leagues = [];
 let teams = [];
 
+async function deleteTeam(id, teamName) {
+    if (!confirm(`Are you sure you want to delete "${teamName}"? This action cannot be undone.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/teams/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert('Team deleted successfully!');
+            // Reload teams for the current league
+            const leagueSelect = document.getElementById('leagueSelect');
+            if (leagueSelect.value) {
+                loadTeamsForLeague(leagueSelect.value);
+            }
+            clearTeamInfo();
+        } else {
+            alert('Failed to delete team.');
+        }
+    } catch (err) {
+        console.error('Error deleting team:', err);
+        alert('An error occurred while deleting the team.');
+    }
+}
+
 async function loadLeagues() {
     try {
         const response = await fetch('/api/leagues');
@@ -69,7 +96,14 @@ function displayTeamInfo(teamId) {
     const league = leagues.find(l => l._id === team.leagueId);
     const leagueName = league ? (league.leagueName || league.title || 'Unknown League') : 'Unknown League';
 
-    document.getElementById('teamHeader').textContent = `${team.teamName}: ${leagueName}`;
+    document.getElementById('teamHeader').innerHTML = `
+        ${team.teamName}: ${leagueName}
+        <div class="mt-2">
+            <button class="btn btn-sm btn-success" onclick="joinTeam('${team._id}', '${team.teamName}')">Join Team</button>
+            <a href="edit.html?type=team&id=${team._id}" class="btn btn-sm btn-primary">Edit Team</a>
+            <button class="btn btn-sm btn-danger" onclick="deleteTeam('${team._id}', '${team.teamName}')">Delete Team</button>
+        </div>
+    `;
 
     const tableBody = document.getElementById('teamRosterBody');
     tableBody.innerHTML = '';

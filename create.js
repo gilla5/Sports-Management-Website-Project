@@ -1,4 +1,5 @@
 let playerCount = 1;
+let currentCoordinates = null;
 
 document.getElementById('backBtn').addEventListener('click', () => {
   if (document.referrer && document.referrer !== window.location.href) {
@@ -7,6 +8,94 @@ document.getElementById('backBtn').addEventListener('click', () => {
     window.location.href = 'index.html';
   }
 });
+
+// Function to get address from coordinates using a free geocoding service
+async function getAddressFromCoordinates(lat, lon) {
+  try {
+    // Using Nominatim (OpenStreetMap) - Free, no API key needed
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
+      headers: {
+        'User-Agent': 'SquadSync Sports Management'
+      }
+    });
+    const data = await response.json();
+    return data.display_name || `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+  } catch (error) {
+    console.error('Error getting address:', error);
+    return `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+  }
+}
+
+// Function to use browser's geolocation
+function useMyLocation(locationInputId, statusElementId) {
+  const locationInput = document.getElementById(locationInputId);
+  const statusElement = document.getElementById(statusElementId);
+  
+  if (!locationInput) {
+    console.error('Location input element not found');
+    return;
+  }
+  
+  if (!statusElement) {
+    console.error('Status element not found');
+    return;
+  }
+  
+  if (!navigator.geolocation) {
+    statusElement.textContent = 'Geolocation is not supported by your browser';
+    statusElement.className = 'alert alert-danger mt-2';
+    statusElement.style.display = 'block';
+    return;
+  }
+
+  statusElement.textContent = 'Getting your location...';
+  statusElement.className = 'alert alert-info mt-2';
+  statusElement.style.display = 'block';
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      currentCoordinates = { lat, lon };
+      
+      statusElement.textContent = 'Location found! Fetching address...';
+      
+      const address = await getAddressFromCoordinates(lat, lon);
+      locationInput.value = address;
+      
+      statusElement.textContent = `✓ Location set: ${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+      statusElement.className = 'alert alert-success mt-2';
+      
+      setTimeout(() => {
+        statusElement.style.display = 'none';
+      }, 3000);
+    },
+    (error) => {
+      let errorMessage = 'Unable to get your location. ';
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          errorMessage += 'Please allow location access in your browser.';
+          break;
+        case error.POSITION_UNAVAILABLE:
+          errorMessage += 'Location information is unavailable.';
+          break;
+        case error.TIMEOUT:
+          errorMessage += 'Location request timed out.';
+          break;
+        default:
+          errorMessage += 'An unknown error occurred.';
+      }
+      statusElement.textContent = errorMessage;
+      statusElement.className = 'alert alert-warning mt-2';
+      statusElement.style.display = 'block';
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    }
+  );
+}
 
 const formTemplates = {
   Tournament: `
@@ -21,10 +110,16 @@ const formTemplates = {
         <option value="">Select a sport</option>
         <option value="Baseball">Baseball</option>
         <option value="Basketball">Basketball</option>
-        <option value="Hockey">Hockey</option>
         <option value="Football">Football</option>
+        <option value="Golf">Golf</option>
+        <option value="Hockey">Hockey</option>
+        <option value="Lacrosse">Lacrosse</option>
+        <option value="Pickleball">Pickleball</option>
         <option value="Soccer">Soccer</option>
+        <option value="Spikeball">Spikeball</option>
         <option value="Tennis">Tennis</option>
+        <option value="Volleyball">Volleyball</option>
+        <option value="Wrestling">Wrestling</option>
       </select>
     </div>
 
@@ -37,6 +132,23 @@ const formTemplates = {
         <option value="Single Elimination">Single Elimination</option>
         <option value="Group Stage">Group Stage</option>
       </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="numTeams" class="form-label">Number of Teams</label>
+      <select class="form-select" id="numTeams">
+        <option value="">Select number of teams</option>
+        <option value="4">4 Teams</option>
+        <option value="8">8 Teams</option>
+        <option value="16">16 Teams</option>
+        <option value="32">32 Teams</option>
+      </select>
+      <small class="text-muted">Optional: Select to generate bracket preview</small>
+    </div>
+
+    <div id="bracketPreview" style="display: none;" class="mb-3 p-3 border rounded bg-light">
+      <h5>Bracket Preview</h5>
+      <p class="text-muted">Bracket structure will be generated after tournament creation</p>
     </div>
 
     <div class="mb-3">
@@ -60,8 +172,12 @@ const formTemplates = {
     </div>
 
     <div class="mb-3">
-      <label for="location" class="form-label">Event Locations</label>
-      <input type="text" class="form-control" id="location" required>
+      <label for="location" class="form-label">Event Location</label>
+      <input type="text" class="form-control" id="location" placeholder="Enter location or use your current location" required>
+      <button type="button" class="btn btn-sm btn-primary mt-2" id="useMyLocation">
+        📍 Use My Current Location
+      </button>
+      <div id="locationStatus" class="mt-2" style="display: none;"></div>
     </div>
 
     <div class="mb-3">
@@ -110,8 +226,12 @@ const formTemplates = {
     </div>
 
     <div class="mb-3">
-      <label for="location" class="form-label">Event Locations</label>
-      <input type="text" class="form-control" id="location" required>
+      <label for="location" class="form-label">Event Location</label>
+      <input type="text" class="form-control" id="location" placeholder="Enter location or use your current location" required>
+      <button type="button" class="btn btn-sm btn-primary mt-2" id="useMyLocation">
+        📍 Use My Current Location
+      </button>
+      <div id="locationStatus" class="mt-2" style="display: none;"></div>
     </div>
 
     <div class="mb-3">
@@ -171,6 +291,43 @@ async function loadLeagues() {
   }
 }
 
+function setupLocationButton() {
+  const useLocationBtn = document.getElementById('useMyLocation');
+  
+  if (useLocationBtn) {
+    // Remove any existing listeners by cloning
+    const newBtn = useLocationBtn.cloneNode(true);
+    useLocationBtn.parentNode.replaceChild(newBtn, useLocationBtn);
+    
+    newBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      useMyLocation('location', 'locationStatus');
+    });
+  }
+}
+
+function setupBracketPreview() {
+  const numTeamsSelect = document.getElementById('numTeams');
+  
+  if (numTeamsSelect) {
+    numTeamsSelect.addEventListener('change', (e) => {
+      const bracketPreview = document.getElementById('bracketPreview');
+      if (bracketPreview) {
+        if (e.target.value) {
+          bracketPreview.style.display = 'block';
+          bracketPreview.innerHTML = `
+            <h5>Bracket Preview</h5>
+            <p class="text-muted">Tournament will use ${e.target.value} teams in a bracket format</p>
+            <p class="text-info">Full bracket will be available after teams are registered</p>
+          `;
+        } else {
+          bracketPreview.style.display = 'none';
+        }
+      }
+    });
+  }
+}
+
 function renderForm(eventType) {
   const container = document.getElementById('dynamicFormContent');
   container.innerHTML = formTemplates[eventType];
@@ -179,20 +336,32 @@ function renderForm(eventType) {
     playerCount = 1;
     loadLeagues();
     
-    document.getElementById('addPlayerBtn').addEventListener('click', () => {
-      playerCount++;
-      const playersContainer = document.getElementById('playersContainer');
-      const newPlayerField = document.createElement('div');
-      newPlayerField.className = 'input-group mb-2';
-      newPlayerField.innerHTML = `
-        <input type="text" class="form-control player-input" placeholder="Player ${playerCount} Name" required>
-        <button type="button" class="btn btn-outline-danger btn-sm remove-player-btn">Remove</button>
-      `;
-      playersContainer.appendChild(newPlayerField);
+    const addPlayerBtn = document.getElementById('addPlayerBtn');
+    if (addPlayerBtn) {
+      addPlayerBtn.addEventListener('click', () => {
+        playerCount++;
+        const playersContainer = document.getElementById('playersContainer');
+        const newPlayerField = document.createElement('div');
+        newPlayerField.className = 'input-group mb-2';
+        newPlayerField.innerHTML = `
+          <input type="text" class="form-control player-input" placeholder="Player ${playerCount} Name" required>
+          <button type="button" class="btn btn-outline-danger btn-sm remove-player-btn">Remove</button>
+        `;
+        playersContainer.appendChild(newPlayerField);
 
-      newPlayerField.querySelector('.remove-player-btn').addEventListener('click', () => {
-        newPlayerField.remove();
+        newPlayerField.querySelector('.remove-player-btn').addEventListener('click', () => {
+          newPlayerField.remove();
+        });
       });
+    }
+  } else if (eventType === 'Tournament' || eventType === 'League') {
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      setupLocationButton();
+      
+      if (eventType === 'Tournament') {
+        setupBracketPreview();
+      }
     });
   }
 }
@@ -215,11 +384,13 @@ document.getElementById('addEventForm').addEventListener('submit', async (e) => 
       tournamentName: document.getElementById('tournamentName').value.trim(),
       sportType: document.getElementById('sportType').value,
       tournamentType: document.getElementById('tournamentType').value,
+      numTeams: document.getElementById('numTeams').value || null,
       startDate: document.getElementById('startDate').value,
       endDate: document.getElementById('endDate').value,
       startTime: document.getElementById('startTime').value,
       endTime: document.getElementById('endTime').value,
       location: document.getElementById('location').value.trim(),
+      coordinates: currentCoordinates,
       description: document.getElementById('description').value.trim()
     };
     endpoint = '/api/tournaments';
@@ -232,6 +403,7 @@ document.getElementById('addEventForm').addEventListener('submit', async (e) => 
       startTime: document.getElementById('startTime').value,
       endTime: document.getElementById('endTime').value,
       location: document.getElementById('location').value.trim(),
+      coordinates: currentCoordinates,
       description: document.getElementById('description').value.trim()
     };
     endpoint = '/api/leagues';
@@ -259,6 +431,7 @@ document.getElementById('addEventForm').addEventListener('submit', async (e) => 
       alert(`${eventType} successfully created!`);
       document.getElementById('addEventForm').reset();
       document.getElementById('dynamicFormContent').innerHTML = '';
+      currentCoordinates = null;
       
       setTimeout(() => {
         if (document.referrer && document.referrer !== window.location.href) {

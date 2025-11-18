@@ -34,6 +34,9 @@
               <a class="nav-link" href="stat.html" style="font-size: x-large">Stats</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="myevents.html" style="font-size: x-large">My Events</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="about.html" style="font-size: x-large">About</a>
             </li>
           </ul>
@@ -72,39 +75,73 @@
     <h2 class="text-center">Welcome to SquadSync</h2>
     <h5 class="text-center mb-4">Teams, Leagues, Tournaments, Play</h5>
 
+    <!-- Quick Actions Section -->
+    <div class="container home-section">
+      <h3 class="text-center mb-4">Quick Actions</h3>
+      <div class="action-buttons">
+        <a href="create.html" class="btn btn-primary">Create League</a>
+        <a href="create.html" class="btn btn-primary">Create Tournament</a>
+        <a href="create.html" class="btn btn-primary">Create Team</a>
+        <a href="team.html" class="btn btn-secondary">View Teams</a>
+        <a href="stat.html" class="btn btn-info text-white">View Stats</a>
+      </div>
+    </div>
+
+    <!-- About SquadSync Section -->
+    <div class="container home-section">
+      <h3 class="text-center mb-4">About SquadSync</h3>
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <p class="card-text">
+                We are a webpage dedicated to simplify and streamline the intramural sports world. We want to focus on giving people an all-in-one place for their teams, leagues, and tournaments with simple tools to better their experience.
+              </p>
+              <p class="card-text">
+                Other platforms can be complicated or have too many hoops to jump through just for you to fit on a roster or manage a team. We want to be different. We want to be better.
+              </p>
+              <p class="card-text">
+                <strong>Our Goal:</strong> We want to create a place for all sports players, athletes or not, to have a stress free place to play the sports they love. Also, making tools that anyone can learn and understand with the least stress is our top priority.
+              </p>
+              <a href="about.html" class="btn btn-primary">Learn More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container text-center">
       <div class="row align-items-start g-4">
         <div class="col">
-  <h3>News</h3>
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title">Update - 11/5/2025</h5>
-      <p class="card-text">Welcome to SquadSync! We want to give you a good experience and detail a tour of the place!</p>
+          <h3>News</h3>
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Update - 11/5/2025</h5>
+              <p class="card-text">Welcome to SquadSync! We want to give you a good experience and detail a tour of the place!</p>
 
-      <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#newsCollapse"
-        aria-expanded="false" aria-controls="newsCollapse">
-        Read More
-      </button>
+              <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#newsCollapse"
+                aria-expanded="false" aria-controls="newsCollapse">
+                Read More
+              </button>
 
-      <div class="collapse mt-3" id="newsCollapse">
-        <p class="card-text">
-          Our webpage is separated into: <br>
-          - Teams (Based on Leagues): Explore teams of various sports and their rosters.
-          <br>
-          Leagues: View leagues available, league games, and their info.
-          <br>
-          Tournament: Find tournaments available, upcoming games, and their info.
-          <br>
-          Stats: Check out team and player statistics across different sports.
-        </p>
-        <p class="card-text">
-          Stay tuned for more updates as we continue to enhance your experience on SquadSync!
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
+              <div class="collapse mt-3" id="newsCollapse">
+                <p class="card-text">
+                  Our webpage is separated into: <br>
+                  - Teams (Based on Leagues): Explore teams of various sports and their rosters.
+                  <br>
+                  - Leagues: View leagues available, league games, and their info.
+                  <br>
+                  - Tournament: Find tournaments available, upcoming games, and their info.
+                  <br>
+                  - Stats: Check out team and player statistics across different sports.
+                </p>
+                <p class="card-text">
+                  Stay tuned for more updates as we continue to enhance your experience on SquadSync!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="col" style="border-left-style: solid; border-right-style: solid;">
           <h3>Highlights Around our Leagues</h3>
@@ -112,7 +149,33 @@
             <div class="card-body">
               <h5 class="card-title">Top Plays & Recaps</h5>
               <p class="card-text">Catch the best moments from last week's league games, including MVP performances and big wins.</p>
-              <a href="#" class="btn btn-success disabled">Watch Highlights</a>
+              <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#highlightsCollapse"
+                aria-expanded="false" aria-controls="highlightsCollapse">
+                Watch Highlights
+              </button>
+              
+              <div class="collapse mt-3" id="highlightsCollapse">
+                <h6>Recent Football Highlights:</h6>
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <strong>🏈 Week 12 Championship Game</strong><br>
+                    <small>Thunderbolts 28 - Lightning 24 | Game-winning TD with 30 seconds left!</small>
+                  </li>
+                  <li class="mb-2">
+                    <strong>🏈 Amazing 75-yard Touchdown Run</strong><br>
+                    <small>Eagles vs Wildcats | Player breaks 5 tackles for the score</small>
+                  </li>
+                  <li class="mb-2">
+                    <strong>🏈 Last-Second Field Goal</strong><br>
+                    <small>Warriors 31 - Titans 30 | 52-yard kick as time expires!</small>
+                  </li>
+                  <li class="mb-2">
+                    <strong>🏈 Defensive Masterclass</strong><br>
+                    <small>Hawks force 4 turnovers in shutout victory</small>
+                  </li>
+                </ul>
+                <p class="text-muted mt-3">Full video highlights coming soon!</p>
+              </div>
             </div>
           </div>
         </div>
@@ -123,7 +186,58 @@
             <div class="card-body">
               <h5 class="card-title">Current Rankings</h5>
               <p class="card-text">View the latest standings, team stats, and league leaders for all divisions.</p>
-              <a href="stat.html" class="btn btn-info text-white">View Standings</a>
+              <button class="btn btn-info text-white" type="button" data-bs-toggle="collapse" data-bs-target="#standingsCollapse"
+                aria-expanded="false" aria-controls="standingsCollapse">
+                View Standings
+              </button>
+              
+              <div class="collapse mt-3" id="standingsCollapse">
+                <h6>Current League Standings:</h6>
+                <div class="table-responsive">
+                  <table class="table table-sm table-striped">
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th>W</th>
+                        <th>L</th>
+                        <th>Pts</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>Thunderbolts</td>
+                        <td>8</td>
+                        <td>1</td>
+                        <td>24</td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>Eagles</td>
+                        <td>7</td>
+                        <td>2</td>
+                        <td>21</td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>Warriors</td>
+                        <td>6</td>
+                        <td>3</td>
+                        <td>18</td>
+                      </tr>
+                      <tr>
+                        <td>4</td>
+                        <td>Hawks</td>
+                        <td>5</td>
+                        <td>4</td>
+                        <td>15</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="text-muted mt-2">Standings update weekly</p>
+              </div>
             </div>
           </div>
         </div>
