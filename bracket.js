@@ -6,7 +6,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         tournamentId = urlParams.get('id');
 
-        // Zoom functionality
         document.getElementById('zoomIn').addEventListener('click', () => {
             if (currentZoom < 1.5) {
                 currentZoom += 0.1;
@@ -32,7 +31,6 @@
             document.getElementById('zoomLevel').textContent = `${Math.round(currentZoom * 100)}%`;
         }
 
-        // Keyboard shortcuts for zoom
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 if (e.key === '+' || e.key === '=') {
