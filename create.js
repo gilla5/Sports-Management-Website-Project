@@ -9,10 +9,8 @@ document.getElementById('backBtn').addEventListener('click', () => {
   }
 });
 
-// Function to get address from coordinates using a free geocoding service
 async function getAddressFromCoordinates(lat, lon) {
   try {
-    // Using Nominatim (OpenStreetMap) - Free, no API key needed
     const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
       headers: {
         'User-Agent': 'SquadSync Sports Management'
@@ -26,7 +24,6 @@ async function getAddressFromCoordinates(lat, lon) {
   }
 }
 
-// Function to use browser's geolocation
 function useMyLocation(locationInputId, statusElementId) {
   const locationInput = document.getElementById(locationInputId);
   const statusElement = document.getElementById(statusElementId);
@@ -295,7 +292,6 @@ function setupLocationButton() {
   const useLocationBtn = document.getElementById('useMyLocation');
   
   if (useLocationBtn) {
-    // Remove any existing listeners by cloning
     const newBtn = useLocationBtn.cloneNode(true);
     useLocationBtn.parentNode.replaceChild(newBtn, useLocationBtn);
     
@@ -355,7 +351,6 @@ function renderForm(eventType) {
       });
     }
   } else if (eventType === 'Tournament' || eventType === 'League') {
-    // Use requestAnimationFrame to ensure DOM is ready
     requestAnimationFrame(() => {
       setupLocationButton();
       
