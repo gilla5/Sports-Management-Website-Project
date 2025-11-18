@@ -23,7 +23,7 @@ async function deleteLeague(id, leagueName) {
 
         if (response.ok) {
             alert('League deleted successfully!');
-            loadLeagues(); // Reload the list
+            loadLeagues();
         } else {
             alert('Failed to delete league.');
         }
@@ -85,7 +85,6 @@ async function loadLeagues() {
             container.appendChild(card);
         });
 
-        // Add join button listeners
         document.querySelectorAll('.join-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = e.target.getAttribute('data-id');
@@ -94,7 +93,6 @@ async function loadLeagues() {
             });
         });
 
-        // Add delete button listeners
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = e.target.getAttribute('data-id');
