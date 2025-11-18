@@ -2,7 +2,6 @@ let currentCoordinates = null;
 let currentEventType = null;
 let currentEventId = null;
 
-// Get event ID and type from URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 currentEventId = urlParams.get('id');
 currentEventType = urlParams.get('type');
@@ -25,7 +24,6 @@ document.getElementById('backBtn').addEventListener('click', () => {
   }
 });
 
-// Function to get address from coordinates
 async function getAddressFromCoordinates(lat, lon) {
   try {
     const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
@@ -41,7 +39,6 @@ async function getAddressFromCoordinates(lat, lon) {
   }
 }
 
-// Function to use browser's geolocation
 function useMyLocation() {
   const locationInput = document.getElementById('location');
   const statusElement = document.getElementById('locationStatus');
@@ -264,7 +261,6 @@ function renderEditForm(data) {
       </div>
     `;
 
-    // Add event listeners for team form
     setTimeout(() => {
       document.getElementById('addPlayerBtn').addEventListener('click', () => {
         const playersContainer = document.getElementById('playersContainer');
@@ -290,7 +286,6 @@ function renderEditForm(data) {
     }, 100);
   }
 
-  // Setup location button for tournaments and leagues
   if (currentEventType === 'tournament' || currentEventType === 'league') {
     setTimeout(() => {
       const useLocationBtn = document.getElementById('useMyLocation');
