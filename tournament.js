@@ -88,7 +88,6 @@ async function loadTournaments() {
             container.appendChild(card);
         });
 
-        // Add join button listeners
         document.querySelectorAll('.join-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = e.target.getAttribute('data-id');
@@ -97,7 +96,6 @@ async function loadTournaments() {
             });
         });
 
-        // Add delete button listeners
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = e.target.getAttribute('data-id');
