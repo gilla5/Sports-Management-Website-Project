@@ -75,7 +75,6 @@ const Tournament = mongoose.model('Tournament', tournamentSchema);
 const Team = mongoose.model('Team', teamSchema);
 const User = mongoose.model('User', userSchema);
 
-// User routes
 app.post('/api/users', async (req, res) => {
   try {
     const user = new User(req.body);
@@ -115,7 +114,6 @@ app.put('/api/users/:username', async (req, res) => {
   }
 });
 
-// League routes
 app.post('/api/leagues', async (req, res) => {
   try {
     const league = new League(req.body);
@@ -177,7 +175,6 @@ app.delete('/api/leagues/:id', async (req, res) => {
   }
 });
 
-// Tournament routes
 app.post('/api/tournaments', async (req, res) => {
   try {
     const tournament = new Tournament(req.body);
@@ -239,7 +236,6 @@ app.delete('/api/tournaments/:id', async (req, res) => {
   }
 });
 
-// Team routes
 app.post('/api/teams', async (req, res) => {
   try {
     const team = new Team(req.body);
