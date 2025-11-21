@@ -12,7 +12,7 @@
 <header>
     <nav class="navbar navbar-expand-lg" style="background-color: blanchedalmond; border-bottom-style: solid">
       <div class="container-fluid">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand img" href="index.html">
               <img src="./images/SquadSyncLogo.png" alt="Logo" width="80" height="80" class="d-inline-block align-text-top">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -72,6 +72,7 @@
 </header>
 
 <main class="container my-4">
+  <h1 class="text-center mb-4">Tournaments</h1>
   <div class="fab-div">
     <a id="createLeagueBtn" class="btn btn-primary fab">Create Tournament</a>
   </div>
@@ -92,6 +93,30 @@
 <script src="profile.js"></script>
 <script src="join.js"></script>
 <script src="./tournament.js"></script>
+<script>
+    const logo = document.querySelector('.navbar-brand img');
+    const brand = document.querySelector('.navbar-brand');
+
+    brand.addEventListener('mouseover', () => {
+      logo.style.filter = "brightness(1.3) hue-rotate(20deg)";
+      logo.style.opacity = "0.6";
+      brand.style.setProperty('--text-opacity', '1');
+      brand.style.opacity = "1";
+      brand.style.setProperty("--show-home", "1");
+      brand.style.position = "relative";
+
+      brand.style.setProperty('--home-opacity', '1');
+      brand.style.setProperty('--show-home', '1');
+      brand.classList.add("show-home");
+    });
+
+    brand.addEventListener('mouseout', () => {
+      logo.style.filter = "none";
+      logo.style.opacity = "1";
+
+      brand.classList.remove("show-home");
+    });
+  </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
