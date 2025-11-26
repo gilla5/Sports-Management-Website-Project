@@ -66,6 +66,11 @@ async function loadLeagues() {
             card.innerHTML = `
                 <div class="card h-100">
                     <div class="card-body">
+                    <!-- TOP-RIGHT BUTTONS -->
+<div class="d-flex justify-content-end gap-2 mb-2">
+    <button class="btn btn-sm btn-success join-btn" data-id="${l._id}" data-name="${l.leagueName}">Join</button>
+    <a href="edit.html?type=league&id=${l._id}" class="btn btn-sm btn-primary">Edit</a>
+</div>
                         <h5 class="card-title">${l.leagueName}</h5>
                         <p class="card-text"><strong>Sport:</strong> ${l.sportType}</p>
                         <p class="card-text"><strong>Start Date:</strong> ${startDate}</p>
@@ -74,11 +79,14 @@ async function loadLeagues() {
                         <p class="card-text"><strong>Location:</strong> ${l.location}</p>
                         <p class="card-text"><strong>Description:</strong> ${l.description}</p>
                         <p class="card-text"><strong>Participants:</strong> ${participantCount}</p>
-                        <div class="mt-3">
-                            <button class="btn btn-sm btn-success join-btn" data-id="${l._id}" data-name="${l.leagueName}">Join League</button>
-                            <a href="edit.html?type=league&id=${l._id}" class="btn btn-sm btn-primary">Edit</a>
-                            <button class="btn btn-sm btn-danger delete-btn" data-id="${l._id}" data-name="${l.leagueName}">Delete</button>
-                        </div>
+
+<!-- DELETE BUTTON AT BOTTOM RIGHT -->
+<div class="mt-auto d-flex justify-content-end">
+    <button class="btn btn-sm btn-danger delete-btn" data-id="${l._id}" data-name="${l.leagueName}">
+        Delete
+    </button>
+</div>
+
                     </div>
                 </div>
             `;
