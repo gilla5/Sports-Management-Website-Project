@@ -23,7 +23,7 @@ async function deleteTournament(id, tournamentName) {
 
         if (response.ok) {
             alert('Tournament deleted successfully!');
-            loadTournaments(); // Reload the list
+            loadTournaments();
         } else {
             alert('Failed to delete tournament.');
         }
@@ -67,6 +67,13 @@ async function loadTournaments() {
             card.innerHTML = `
                 <div class="card h-100">
                     <div class="card-body">
+                    <div class="d-flex justify-content-end gap-2 mb-2">
+    <button class="btn btn-sm btn-success join-btn" data-id="${t._id}" data-name="${t.tournamentName}">
+        Join
+    </button>
+    <a href="bracket.html?id=${t._id}" class="btn btn-sm btn-warning">Edit Bracket</a>
+    <a href="edit.html?type=tournament&id=${t._id}" class="btn btn-sm btn-primary">Edit</a>
+</div>
                         <h5 class="card-title">${t.tournamentName || 'Unnamed Tournament'}</h5>
                         <p class="card-text"><strong>Sport:</strong> ${t.sportType || 'N/A'}</p>
                         <p class="card-text"><strong>Tournament Type:</strong> ${t.tournamentType || 'N/A'}</p>
@@ -76,12 +83,11 @@ async function loadTournaments() {
                         <p class="card-text"><strong>Location:</strong> ${t.location || 'N/A'}</p>
                         <p class="card-text"><strong>Description:</strong> ${t.description || 'No description provided'}</p>
                         <p class="card-text"><strong>Participants:</strong> ${participantCount} / ${maxParticipants}</p>
-                        <div class="mt-3">
-                            <button class="btn btn-sm btn-success join-btn" data-id="${t._id}" data-name="${t.tournamentName}">Join Tournament</button>
-                            <a href="bracket.html?id=${t._id}" class="btn btn-sm btn-warning">Edit Bracket</a>
-                            <a href="edit.html?type=tournament&id=${t._id}" class="btn btn-sm btn-primary">Edit</a>
-                            <button class="btn btn-sm btn-danger delete-btn" data-id="${t._id}" data-name="${t.tournamentName}">Delete</button>
-                        </div>
+                        <div class="mt-auto d-flex justify-content-end">
+    <button class="btn btn-sm btn-danger delete-btn" data-id="${t._id}" data-name="${t.tournamentName}">
+        Delete
+    </button>
+</div>
                     </div>
                 </div>
             `;
