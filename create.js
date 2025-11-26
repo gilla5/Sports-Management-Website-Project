@@ -427,16 +427,6 @@ document.getElementById('addEventForm').addEventListener('submit', async (e) => 
       document.getElementById('addEventForm').reset();
       document.getElementById('dynamicFormContent').innerHTML = '';
       currentCoordinates = null;
-      
-      setTimeout(() => {
-        if (document.referrer && document.referrer !== window.location.href) {
-          window.history.back();
-        } else {
-          window.location.href = 'index.html';
-        }
-      }, 500);
-    } else {
-      alert(`Failed to create ${eventType.toLowerCase()}.`);
     }
   } catch (err) {
     console.error('Error:', err);
