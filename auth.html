@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In / Sign Up - SquadSync</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheet.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .auth-header img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+            filter: brightness(0) invert(1);
+        }
+
+        .auth-header h1 {
+            font-size: 2rem;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .auth-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .auth-body {
+            padding: 40px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: #f0f0f0;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .guest-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .guest-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .guest-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <img src="./images/SquadSyncLogo.png" alt="SquadSync Logo">
+            <h1>SquadSync</h1>
+            <p>Manage Your Sports Journey</p>
+        </div>
+
+        <div class="auth-body">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="switchTab('signin')">Sign In</button>
+                <button class="tab-button" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <div id="alertContainer"></div>
+
+            <!-- Sign In Form -->
+            <form id="signinForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="signin-email">Email</label>
+                    <input type="email" id="signin-email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signin-password">Password</label>
+                    <input type="password" id="signin-password" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signup-username">Username</label>
+                    <input type="text" id="signup-username" placeholder="Choose a username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="Create a password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" placeholder="Confirm your password" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+
+            <div class="guest-link">
+                <a href="index.html">Continue as Guest</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

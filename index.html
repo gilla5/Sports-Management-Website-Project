@@ -41,6 +41,10 @@
             </li>
           </ul>
           
+          <a href="auth.html" class="btn btn-primary me-2" id="authButton" style="display: none;">
+            Sign In
+          </a>
+          
           <div class="profile-container ms-3">
             <div class="profile-icon" id="profileIcon" onclick="toggleProfileDropdown()">
               G
@@ -64,6 +68,7 @@
                 <p id="profileSport">Not set</p>
               </div>
               <a href="profile.html" class="btn btn-primary">Edit Profile</a>
+              <button onclick="signOut()" class="btn btn-danger mt-2 w-100" id="signOutBtn" style="display: none;">Sign Out</button>
             </div>
           </div>
         </div>

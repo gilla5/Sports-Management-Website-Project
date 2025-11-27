@@ -32,6 +32,39 @@ function displayUserProfile() {
     
     const initial = user.username.charAt(0).toUpperCase();
     document.getElementById('profileIcon').textContent = initial;
+    
+    // Show/hide auth button and sign out button based on user status
+    const authButton = document.getElementById('authButton');
+    const signOutBtn = document.getElementById('signOutBtn');
+    
+    if (authButton) {
+        if (user.username === 'Guest') {
+            authButton.style.display = 'inline-block';
+        } else {
+            authButton.style.display = 'none';
+        }
+    }
+    
+    if (signOutBtn) {
+        if (user.username === 'Guest') {
+            signOutBtn.style.display = 'none';
+        } else {
+            signOutBtn.style.display = 'block';
+        }
+    }
+}
+
+function signOut() {
+    if (confirm('Are you sure you want to sign out?')) {
+        const defaultUser = {
+            username: 'Guest',
+            email: 'guest@squadsync.com',
+            favoriteTeam: '',
+            favoriteSport: ''
+        };
+        localStorage.setItem('squadSyncCurrentUser', JSON.stringify(defaultUser));
+        window.location.reload();
+    }
 }
 
 function toggleProfileDropdown() {
