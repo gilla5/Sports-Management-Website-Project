@@ -1,5 +1,7 @@
+
 let playerCount = 1;
 let currentCoordinates = null;
+let selectedImageFile = null;
 
 document.getElementById('backBtn').addEventListener('click', () => {
   if (document.referrer && document.referrer !== window.location.href) {
@@ -94,11 +96,56 @@ function useMyLocation(locationInputId, statusElementId) {
   );
 }
 
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (file) {
+    if (file.size > 5000000) {
+      alert('Image file size must be less than 5MB');
+      event.target.value = '';
+      return;
+    }
+    
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      event.target.value = '';
+      return;
+    }
+    
+    selectedImageFile = file;
+    
+    const preview = document.getElementById('imagePreview');
+    if (preview) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+}
+
+function convertImageToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 const formTemplates = {
   Tournament: `
     <div class="mb-3">
       <label for="tournamentName" class="form-label">Tournament Name</label>
       <input type="text" class="form-control" id="tournamentName" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="tournamentImage" class="form-label">Tournament Image (Optional)</label>
+      <input type="file" class="form-control" id="tournamentImage" accept="image/*">
+      <small class="text-muted">Max file size: 5MB. Recommended size: 800x400px</small>
+      <img id="imagePreview" style="max-width: 100%; max-height: 200px; margin-top: 10px; display: none;" />
     </div>
 
     <div class="mb-3">
@@ -187,6 +234,13 @@ const formTemplates = {
     <div class="mb-3">
       <label for="leagueName" class="form-label">League Name</label>
       <input type="text" class="form-control" id="leagueName" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="leagueImage" class="form-label">League Image (Optional)</label>
+      <input type="file" class="form-control" id="leagueImage" accept="image/*">
+      <small class="text-muted">Max file size: 5MB. Recommended size: 800x400px</small>
+      <img id="imagePreview" style="max-width: 100%; max-height: 200px; margin-top: 10px; display: none;" />
     </div>
 
     <div class="mb-3">
@@ -302,6 +356,19 @@ function setupLocationButton() {
   }
 }
 
+function setupImageUpload() {
+  const tournamentImageInput = document.getElementById('tournamentImage');
+  const leagueImageInput = document.getElementById('leagueImage');
+  
+  if (tournamentImageInput) {
+    tournamentImageInput.addEventListener('change', handleImageUpload);
+  }
+  
+  if (leagueImageInput) {
+    leagueImageInput.addEventListener('change', handleImageUpload);
+  }
+}
+
 function setupBracketPreview() {
   const numTeamsSelect = document.getElementById('numTeams');
   
@@ -327,6 +394,7 @@ function setupBracketPreview() {
 function renderForm(eventType) {
   const container = document.getElementById('dynamicFormContent');
   container.innerHTML = formTemplates[eventType];
+  selectedImageFile = null;
   
   if (eventType === 'Team') {
     playerCount = 1;
@@ -353,6 +421,7 @@ function renderForm(eventType) {
   } else if (eventType === 'Tournament' || eventType === 'League') {
     requestAnimationFrame(() => {
       setupLocationButton();
+      setupImageUpload();
       
       if (eventType === 'Tournament') {
         setupBracketPreview();
@@ -388,6 +457,11 @@ document.getElementById('addEventForm').addEventListener('submit', async (e) => 
       coordinates: currentCoordinates,
       description: document.getElementById('description').value.trim()
     };
+    
+    if (selectedImageFile) {
+      eventData.image = await convertImageToBase64(selectedImageFile);
+    }
+    
     endpoint = '/api/tournaments';
   } else if (eventType === 'League') {
     eventData = {
@@ -401,6 +475,11 @@ document.getElementById('addEventForm').addEventListener('submit', async (e) => 
       coordinates: currentCoordinates,
       description: document.getElementById('description').value.trim()
     };
+    
+    if (selectedImageFile) {
+      eventData.image = await convertImageToBase64(selectedImageFile);
+    }
+    
     endpoint = '/api/leagues';
   } else if (eventType === 'Team') {
     const players = Array.from(document.querySelectorAll('.player-input'))
@@ -427,6 +506,7 @@ document.getElementById('addEventForm').addEventListener('submit', async (e) => 
       document.getElementById('addEventForm').reset();
       document.getElementById('dynamicFormContent').innerHTML = '';
       currentCoordinates = null;
+      selectedImageFile = null;
     }
   } catch (err) {
     console.error('Error:', err);

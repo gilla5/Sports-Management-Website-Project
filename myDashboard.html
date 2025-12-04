@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>League Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <title>My Events - SquadSync</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg" style="background-color: blanchedalmond; border-bottom-style: solid">
         <div class="container-fluid">
-            <a class="navbar-brand img" href="index.html">
+            <a class="navbar-brand" href="index.html">
                 <img src="./images/SquadSyncLogo.png" alt="Logo" width="80" height="80" class="d-inline-block align-text-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -20,14 +20,26 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="team.html" style="font-size: x-large">Teams</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="league.html" style="font-size: x-large; color:blueviolet">Leagues</a></li>
-                <li class="nav-item"><a class="nav-link" href="tournament.html" style="font-size: x-large">Tournaments</a></li>
-                <li class="nav-item"><a class="nav-link" href="stat.html" style="font-size: x-large">Stats</a></li>
-                <li class="nav-item"><a class="nav-link" href="myDashboard.html" style="font-size: x-large">My Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="contactUs.html" style="font-size: x-large">Contact Us</a></li>
+                <li class="nav-item">
+                  <a class="nav-link" href="team.html" style="font-size: x-large">Teams</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="league.html" style="font-size: x-large">Leagues</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="tournament.html" style="font-size: x-large">Tournaments</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="stat.html" style="font-size: x-large">Stats</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="myDashboard.html" style="font-size: x-large; color:blueviolet">My Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="contactUs.html" style="font-size: x-large">Contact Us</a>
+                </li>
               </ul>
-
+              
               <div class="profile-container ms-3">
                 <div class="profile-icon" id="profileIcon" onclick="toggleProfileDropdown()">
                   G
@@ -59,19 +71,46 @@
 </header>
 
 <main class="container my-4">
-  <h1 class="text-center mb-4">Leagues</h1>
-  <div class="fab-div">
-    <a id="createLeagueBtn" class="btn btn-primary fab">Create League</a>
-  </div>
-  <br>
-
-    <p>
-       Welcome to the League Page! Here you can find information about upcoming leagues! 
-       Stay tuned for the latest updates and announcements regarding leagues!
-    </p>
-
-    <div id="leaguesContainer" class="row g-3">
+    <h1 class="text-center mb-4">My Events</h1>
+    
+    <div id="guestWarning" class="alert alert-warning text-center" style="display: none;">
+        <h4>Not Logged In</h4>
+        <p>Please <a href="profile.html">set up your profile</a> to see your joined events!</p>
     </div>
+    <div>
+      <label for="Field">Choose a Category for your Events:</label>
+          <select name="Field" id="Events">
+            <option value="Tournaments">Tournaments</option>
+            <option value="Leagues">Leagues</option>
+            <option value="Teams">Teams</option>
+          </select>
+    </div>
+    <section class="mb-5">
+        <h2>My Tournaments <span class="badge bg-primary" id="tournamentCount">0</span></h2>
+        <div id="myTournamentsContainer" class="row g-3">
+            <div class="col-12 text-center text-muted">
+                <p>Loading tournaments...</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2>My Leagues <span class="badge bg-success" id="leagueCount">0</span></h2>
+        <div id="myLeaguesContainer" class="row g-3">
+            <div class="col-12 text-center text-muted">
+                <p>Loading leagues...</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2>My Teams <span class="badge bg-info" id="teamCount">0</span></h2>
+        <div id="myTeamsContainer" class="row g-3">
+            <div class="col-12 text-center text-muted">
+                <p>Loading teams...</p>
+            </div>
+        </div>
+    </section>
 </main>
 
 <footer style="text-align: center; background-color: black; color: white">
@@ -79,8 +118,7 @@
 </footer>
 
 <script src="profile.js"></script>
-<script src="join.js"></script>
-<script src="league.js"></script>
+<script src="myevents.js"></script>
 <script>
     const logo = document.querySelector('.navbar-brand img');
     const brand = document.querySelector('.navbar-brand');
@@ -114,6 +152,6 @@
     }
 });
   </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

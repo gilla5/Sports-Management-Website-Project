@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Contact Us</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="stylesheet" href="stylesheet.css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg" style="background-color: blanchedalmond; border-bottom-style: solid">
+              <div class="container-fluid">
+                <a class="navbar-brand img" href="index.html">
+                      <img src="./images/SquadSyncLogo.png" alt="Logo" width="80" height="80" class="d-inline-block align-text-top">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <a class="nav-link" href="team.html" style="font-size: x-large">Teams</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="league.html" style="font-size: x-large">Leagues</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="tournament.html" style="font-size: x-large">Tournaments</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="stat.html" style="font-size: x-large">Stats</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="myDashboard.html" style="font-size: x-large">My Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link disabled" href="contactUs.html" style="font-size: x-large; color:blueviolet">Contact Us</a>
+                    </li>
+                  </ul>
+                  
+                  <div class="profile-container ms-3">
+                    <div class="profile-icon" id="profileIcon" onclick="toggleProfileDropdown()">
+                      G
+                    </div>
+                    <div class="profile-dropdown" id="profileDropdown">
+                      <h5>Profile</h5>
+                      <div class="profile-info">
+                        <label>Username:</label>
+                        <p id="profileUsername">Guest</p>
+                      </div>
+                      <div class="profile-info">
+                        <label>Email:</label>
+                        <p id="profileEmail">guest@squadsync.com</p>
+                      </div>
+                      <div class="profile-info">
+                        <label>Favorite Team:</label>
+                        <p id="profileTeam">Not set</p>
+                      </div>
+                      <div class="profile-info">
+                        <label>Favorite Sport:</label>
+                        <p id="profileSport">Not set</p>
+                      </div>
+                      <a href="profile.html" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </nav>
+        </header>
+        <main class="container my-4">
+          <h1 class="text-center mb-4">Contact Us</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h3>Get In Touch</h3>
+                        <p>Have questions or feedback? We'd love to hear from you!</p>
+                        
+                        <div class="mb-3">
+                            <strong>Email:</strong><br>
+                            <a href="mailto:support@squadsync.com">support@squadsync.com</a>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Phone:</strong><br>
+                            (555) 123-4567
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Office Hours:</strong><br>
+                            Monday - Friday: 9:00 AM - 6:00 PM EST<br>
+                            Saturday: 10:00 AM - 4:00 PM EST<br>
+                            Sunday: Closed
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Address:</strong><br>
+                            123 Sports Avenue<br>
+                            Cincinnati, OH 45202<br>
+                            United States
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h3>Send Us a Message</h3>
+                        <form id="contactForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <select class="form-control" id="subject" required>
+                                    <option value="">Select a topic</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="bug">Report a Bug</option>
+                                    <option value="feature">Feature Request</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="5" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="mb-4">📰 Latest News & Updates</h3>
+                
+                <div class="news-item mb-4 p-3 border-start border-primary border-5">
+                    <h5 class="text-primary">Update - December 4, 2024</h5>
+                    <p><strong>New Feature:</strong> Tournament Bracket Editor Now Live!</p>
+                    <p>We're excited to announce that you can now create and manage tournament brackets directly on SquadSync. Set up single elimination, double elimination, and round robin tournaments with ease!</p>
+                </div>
+                
+                <div class="news-item mb-4 p-3 border-start border-success border-5">
+                    <h5 class="text-success">Update - November 28, 2024</h5>
+                    <p><strong>Improved:</strong> Mobile Experience Enhanced</p>
+                    <p>Our mobile interface has been completely redesigned for better usability on phones and tablets. Navigate your teams, leagues, and tournaments on the go!</p>
+                </div>
+                
+                <div class="news-item mb-4 p-3 border-start border-info border-5">
+                    <h5 class="text-info">Update - November 20, 2024</h5>
+                    <p><strong>New Feature:</strong> Player Statistics Tracking</p>
+                    <p>Keep track of individual player stats including goals, assists, wins, and more. Perfect for league commissioners and team managers!</p>
+                </div>
+                
+                <div class="news-item mb-4 p-3 border-start border-warning border-5">
+                    <h5 class="text-warning">Update - November 15, 2024</h5>
+                    <p><strong>Community:</strong> 1,000+ Active Users Milestone!</p>
+                    <p>Thank you to our amazing community! We've reached over 1,000 active users managing their sports leagues and tournaments on SquadSync.</p>
+                </div>
+                
+                <div class="news-item mb-4 p-3 border-start border-danger border-5">
+                    <h5 class="text-danger">Update - November 8, 2024</h5>
+                    <p><strong>Feature:</strong> Image Uploads for Leagues and Tournaments</p>
+                    <p>Make your events stand out! You can now upload custom images for your leagues and tournaments to give them a professional look.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3>Frequently Asked Questions</h3>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                How do I create a league?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Click on "Create League" from the home page or any league page. Fill in the required information including sport type, dates, and location, then submit!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Can I join multiple teams?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! You can join as many teams as you'd like across different leagues and tournaments. All your teams will be visible in your dashboard.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Is SquadSync free to use?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! SquadSync is completely free for all users. Create unlimited leagues, tournaments, and teams at no cost.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </main> 
+        <footer>
+            <p>&copy; 2024 Squad Sync. All rights reserved.</p>
+        </footer>
+        <script src="profile.js"></script>
+        <script>
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Thank you for your message! We will get back to you soon.');
+                this.reset();
+            });
+
+            const logo = document.querySelector('.navbar-brand img');
+            const brand = document.querySelector('.navbar-brand');
+
+            brand.addEventListener('mouseover', () => {
+              logo.style.filter = "brightness(1.3) hue-rotate(20deg)";
+              logo.style.opacity = "0.6";
+              brand.style.setProperty('--text-opacity', '1');
+              brand.style.opacity = "1";
+              brand.style.setProperty("--show-home", "1");
+              brand.style.position = "relative";
+
+              brand.style.setProperty('--home-opacity', '1');
+              brand.style.setProperty('--show-home', '1');
+              brand.classList.add("show-home");
+            });
+
+            brand.addEventListener('mouseout', () => {
+              logo.style.filter = "none";
+              logo.style.opacity = "1";
+
+              brand.classList.remove("show-home");
+            });
+
+            window.addEventListener("scroll", function () {
+            const navbar = document.querySelector(".navbar");
+            if (window.scrollY > 50) {
+                navbar.classList.add("shrink");
+            } else {
+                navbar.classList.remove("shrink");
+            }
+        });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    </body>
+</html>
