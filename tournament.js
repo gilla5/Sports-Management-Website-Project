@@ -33,6 +33,61 @@ async function deleteTournament(id, tournamentName) {
     }
 }
 
+// Updated joinTournament function to include teamId & teamName
+async function joinTournament(tournamentId, tournamentName, teamId, teamName) {
+    const user = getCurrentUser();
+    
+    if (user.username === 'Guest') {
+        alert('Please set up your profile before joining a tournament!');
+        window.location.href = 'profile.html';
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/tournaments/${tournamentId}`);
+        const tournament = await response.json();
+
+        const participants = tournament.participants || [];
+
+        if (participants.some(p => p.username === user.username)) {
+            alert('You have already joined this tournament!');
+            return;
+        }
+
+        if (tournament.numTeams && participants.length >= tournament.numTeams) {
+            alert('This tournament is full!');
+            return;
+        }
+
+        const updatedParticipants = [...participants, {
+            username: user.username,
+            email: user.email,
+            teamId: teamId || null,
+            teamName: teamName || null,
+            joinedAt: new Date().toISOString()
+        }];
+
+        const updateResponse = await fetch(`/api/tournaments/${tournamentId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                ...tournament,
+                participants: updatedParticipants
+            })
+        });
+
+        if (updateResponse.ok) {
+            alert(`Successfully joined ${tournamentName} as ${teamName || 'No Team Selected'}!`);
+            loadTournaments();
+        } else {
+            alert('Failed to join tournament. Please try again.');
+        }
+    } catch (err) {
+        console.error('Error joining tournament:', err);
+        alert('An error occurred while joining the tournament.');
+    }
+}
+
 async function loadTournaments() {
     try {
         const response = await fetch('/api/tournaments');
@@ -50,31 +105,27 @@ async function loadTournaments() {
             const card = document.createElement('div');
             card.className = 'col-md-4';
             
-            const startDate = new Date(t.startDate).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            const endDate = new Date(t.endDate).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            
+            const startDate = new Date(t.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            const endDate = new Date(t.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
             const participantCount = t.participants ? t.participants.length : 0;
             const maxParticipants = t.numTeams || '∞';
-            
+
             card.innerHTML = `
                 <div class="card h-100">
                     <div class="card-body">
-                    <div class="d-flex justify-content-end gap-2 mb-2">
-    <button class="btn btn-sm btn-success join-btn" data-id="${t._id}" data-name="${t.tournamentName}">
-        Join
-    </button>
-    <a href="bracket.html?id=${t._id}" class="btn btn-sm btn-warning">Edit Bracket</a>
-    <a href="edit.html?type=tournament&id=${t._id}" class="btn btn-sm btn-primary">Edit</a>
-</div>
-                        <h5 class="card-title">${t.tournamentName || 'Unnamed Tournament'}</h5>
+                        <div class="d-flex justify-content-end gap-2 mb-2">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-success join-btn" data-id="${t._id}" data-name="${t.tournamentName}">
+                                    Join
+                                </button>
+                                <ul class="dropdown-menu join-dropdown" id="join-dropdown-${t._id}"></ul>
+                            </div>
+                            <a href="bracket.html?id=${t._id}" class="btn btn-sm btn-warning">Edit Bracket</a>
+                            <a href="edit.html?type=tournament&id=${t._id}" class="btn btn-sm btn-primary">Edit</a>
+                        </div>
+                        <h5 class="card-title">
+                            <a href="tournament_detail.html?id=${t._id}">${t.tournamentName || 'Unnamed Tournament'}</a>
+                        </h5>
                         <p class="card-text"><strong>Sport:</strong> ${t.sportType || 'N/A'}</p>
                         <p class="card-text"><strong>Tournament Type:</strong> ${t.tournamentType || 'N/A'}</p>
                         <p class="card-text"><strong>Start Date:</strong> ${startDate}</p>
@@ -84,21 +135,49 @@ async function loadTournaments() {
                         <p class="card-text"><strong>Description:</strong> ${t.description || 'No description provided'}</p>
                         <p class="card-text"><strong>Participants:</strong> ${participantCount} / ${maxParticipants}</p>
                         <div class="mt-auto d-flex justify-content-end">
-    <button class="btn btn-sm btn-danger delete-btn" data-id="${t._id}" data-name="${t.tournamentName}">
-        Delete
-    </button>
-</div>
+                            <button class="btn btn-sm btn-danger delete-btn" data-id="${t._id}" data-name="${t.tournamentName}">
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
+
             container.appendChild(card);
+            const joinBtn = card.querySelector('.join-btn');
+            updateJoinButtonState(joinBtn, t.participants);
+
         });
 
-        document.querySelectorAll('.join-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = e.target.getAttribute('data-id');
-                const name = e.target.getAttribute('data-name');
-                joinTournament(id, name);
+        // Add event listeners for Join buttons with dropdown
+        document.querySelectorAll('.join-btn').forEach(async btn => {
+            btn.addEventListener('click', async (e) => {
+                const tournamentId = e.target.getAttribute('data-id');
+                const tournamentName = e.target.getAttribute('data-name');
+                const dropdown = document.getElementById(`join-dropdown-${tournamentId}`);
+
+                // Clear previous items
+                dropdown.innerHTML = '';
+
+                try {
+                    const teamsRes = await fetch('/api/teams');
+                    const teams = await teamsRes.json();
+
+                    teams.forEach(team => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a class="dropdown-item" href="#">${team.teamName}</a>`;
+                        li.addEventListener('click', () => {
+                            joinTournament(tournamentId, tournamentName, team._id, team.teamName);
+                            dropdown.classList.remove('show');
+                        });
+                        dropdown.appendChild(li);
+                    });
+
+                    dropdown.classList.toggle('show');
+                } catch (err) {
+                    console.error('Error loading teams:', err);
+                    alert('Failed to load teams.');
+                }
             });
         });
 
@@ -109,10 +188,23 @@ async function loadTournaments() {
                 deleteTournament(id, name);
             });
         });
+
     } catch (err) {
         console.error('Error loading tournaments:', err);
         document.getElementById('tournamentsContainer').innerHTML = '<p class="text-danger">Failed to load tournaments.</p>';
     }
 }
+
+function updateJoinButtonState(btn, participants) {
+    const user = getCurrentUser();
+    if (!participants || !Array.isArray(participants)) return;
+
+    if (participants.some(p => p.username === user.username)) {
+        btn.textContent = "Joined";
+        btn.classList.add("disabled");
+        btn.disabled = true;
+    }
+}
+
 
 loadTournaments();

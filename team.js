@@ -17,7 +17,6 @@ async function deleteTeam(id, teamName) {
 
         if (response.ok) {
             alert('Team deleted successfully!');
-            // Reload teams for the current league
             const leagueSelect = document.getElementById('leagueSelect');
             if (leagueSelect.value) {
                 loadTeamsForLeague(leagueSelect.value);

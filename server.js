@@ -31,7 +31,9 @@ const leagueSchema = new mongoose.Schema({
   description: { type: String, required: true },
   participants: [{ 
     username: String, 
-    email: String, 
+    email: String,
+    teamId: String,
+    teamName: String,
     joinedAt: String 
   }]
 }, { timestamps: true });
@@ -52,13 +54,15 @@ const tournamentSchema = new mongoose.Schema({
   description: { type: String, required: true },
   participants: [{ 
     username: String, 
-    email: String, 
+    email: String,
+    teamId: String,
+    teamName: String,
     joinedAt: String 
   }]
 }, { timestamps: true });
 
 const teamSchema = new mongoose.Schema({
-  leagueId: { type: mongoose.Schema.Types.ObjectId, ref: 'League', required: true },
+  leagueId: { type: mongoose.Schema.Types.ObjectId, ref: 'League', required: false },
   teamName: { type: String, required: true },
   players: [{ type: String, required: true }],
 }, { timestamps: true });
@@ -282,6 +286,29 @@ app.put('/api/teams/:id', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Error updating team' });
+  }
+});
+
+// ADDED: New endpoint to specifically update team's leagueId
+app.patch('/api/teams/:id/league', async (req, res) => {
+  try {
+    console.log('Setting leagueId for team:', req.params.id);
+    console.log('New leagueId:', req.body.leagueId);
+    
+    const team = await Team.findById(req.params.id);
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    
+    team.leagueId = req.body.leagueId;
+    await team.save();
+    
+    console.log('Team after save:', team);
+    
+    res.json({ message: 'Team league updated successfully', team });
+  } catch (err) {
+    console.error('Error updating team league:', err);
+    res.status(500).json({ message: 'Error updating team league' });
   }
 });
 

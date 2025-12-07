@@ -292,28 +292,21 @@ const formTemplates = {
   `,
 
   Team: `
-    <div class="mb-3">
-      <label for="leagueSelect" class="form-label">League For Team</label>
-      <select class="form-select" id="leagueSelect" required>
-        <option value="">Loading leagues...</option>
-      </select>
-    </div>
+  <div class="mb-3">
+    <label for="teamName" class="form-label">Team Name</label>
+    <input type="text" class="form-control" id="teamName" required>
+  </div>
 
-    <div class="mb-3">
-      <label for="teamName" class="form-label">Team Name</label>
-      <input type="text" class="form-control" id="teamName" required>
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Player(s) on Team</label>
-      <div id="playersContainer">
-        <div class="input-group mb-2">
-          <input type="text" class="form-control player-input" placeholder="Player 1 Name" required>
-        </div>
+  <div class="mb-3">
+    <label class="form-label">Player(s) on Team</label>
+    <div id="playersContainer">
+      <div class="input-group mb-2">
+        <input type="text" class="form-control player-input" placeholder="Player 1 Name" required>
       </div>
-      <button type="button" class="btn btn-secondary btn-sm" id="addPlayerBtn">Add Another Player</button>
     </div>
-  `
+    <button type="button" class="btn btn-secondary btn-sm" id="addPlayerBtn">Add Another Player</button>
+  </div>
+`
 };
 
 async function loadLeagues() {
@@ -397,28 +390,28 @@ function renderForm(eventType) {
   selectedImageFile = null;
   
   if (eventType === 'Team') {
-    playerCount = 1;
-    loadLeagues();
-    
-    const addPlayerBtn = document.getElementById('addPlayerBtn');
-    if (addPlayerBtn) {
-      addPlayerBtn.addEventListener('click', () => {
-        playerCount++;
-        const playersContainer = document.getElementById('playersContainer');
-        const newPlayerField = document.createElement('div');
-        newPlayerField.className = 'input-group mb-2';
-        newPlayerField.innerHTML = `
-          <input type="text" class="form-control player-input" placeholder="Player ${playerCount} Name" required>
-          <button type="button" class="btn btn-outline-danger btn-sm remove-player-btn">Remove</button>
-        `;
-        playersContainer.appendChild(newPlayerField);
+  playerCount = 1;
 
-        newPlayerField.querySelector('.remove-player-btn').addEventListener('click', () => {
-          newPlayerField.remove();
-        });
+  const addPlayerBtn = document.getElementById('addPlayerBtn');
+  if (addPlayerBtn) {
+    addPlayerBtn.addEventListener('click', () => {
+      playerCount++;
+      const playersContainer = document.getElementById('playersContainer');
+      const newPlayerField = document.createElement('div');
+      newPlayerField.className = 'input-group mb-2';
+      newPlayerField.innerHTML = `
+        <input type="text" class="form-control player-input" placeholder="Player ${playerCount} Name" required>
+        <button type="button" class="btn btn-outline-danger btn-sm remove-player-btn">Remove</button>
+      `;
+      playersContainer.appendChild(newPlayerField);
+
+      newPlayerField.querySelector('.remove-player-btn').addEventListener('click', () => {
+        newPlayerField.remove();
       });
-    }
-  } else if (eventType === 'Tournament' || eventType === 'League') {
+    });
+  }
+}
+ else if (eventType === 'Tournament' || eventType === 'League') {
     requestAnimationFrame(() => {
       setupLocationButton();
       setupImageUpload();
@@ -482,17 +475,17 @@ document.getElementById('addEventForm').addEventListener('submit', async (e) => 
     
     endpoint = '/api/leagues';
   } else if (eventType === 'Team') {
-    const players = Array.from(document.querySelectorAll('.player-input'))
-      .map(input => input.value.trim())
-      .filter(name => name !== '');
-    
-    eventData = {
-      leagueId: document.getElementById('leagueSelect').value,
-      teamName: document.getElementById('teamName').value.trim(),
-      players: players
-    };
-    endpoint = '/api/teams';
-  }
+  const players = Array.from(document.querySelectorAll('.player-input'))
+    .map(input => input.value.trim())
+    .filter(name => name !== '');
+
+  eventData = {
+    teamName: document.getElementById('teamName').value.trim(),
+    players: players
+  };
+  endpoint = '/api/teams';
+}
+
 
   try {
     const response = await fetch(endpoint, {
