@@ -127,76 +127,90 @@ function renderEditForm(data) {
   if (currentEventType === 'tournament') {
     formContainer.innerHTML = `
       <div class="mb-3">
-        <label for="tournamentName" class="form-label">Tournament Name</label>
-        <input type="text" class="form-control" id="tournamentName" value="${data.tournamentName}" required>
+        <label for="tournamentName" class="form-label fw-bold">Tournament Name</label>
+        <input type="text" class="form-control compact" id="tournamentName" value="${data.tournamentName}" required>
       </div>
 
-      <div class="mb-3">
-        <label for="sportType" class="form-label">Sport Type</label>
-        <select class="form-select" id="sportType" required>
-          <option value="Baseball" ${data.sportType === 'Baseball' ? 'selected' : ''}>Baseball</option>
-          <option value="Basketball" ${data.sportType === 'Basketball' ? 'selected' : ''}>Basketball</option>
-          <option value="Hockey" ${data.sportType === 'Hockey' ? 'selected' : ''}>Hockey</option>
-          <option value="Football" ${data.sportType === 'Football' ? 'selected' : ''}>Football</option>
-          <option value="Soccer" ${data.sportType === 'Soccer' ? 'selected' : ''}>Soccer</option>
-          <option value="Tennis" ${data.sportType === 'Tennis' ? 'selected' : ''}>Tennis</option>
-        </select>
+      <hr>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label for="sportType" class="form-label">Sport Type</label>
+          <select class="form-select compact" id="sportType" required>
+            <option value="Baseball" ${data.sportType === 'Baseball' ? 'selected' : ''}>Baseball</option>
+            <option value="Basketball" ${data.sportType === 'Basketball' ? 'selected' : ''}>Basketball</option>
+            <option value="Hockey" ${data.sportType === 'Hockey' ? 'selected' : ''}>Hockey</option>
+            <option value="Football" ${data.sportType === 'Football' ? 'selected' : ''}>Football</option>
+            <option value="Soccer" ${data.sportType === 'Soccer' ? 'selected' : ''}>Soccer</option>
+            <option value="Tennis" ${data.sportType === 'Tennis' ? 'selected' : ''}>Tennis</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label for="tournamentType" class="form-label">Tournament Type</label>
+          <select class="form-select compact" id="tournamentType" required>
+            <option value="Round Robin" ${data.tournamentType === 'Round Robin' ? 'selected' : ''}>Round Robin</option>
+            <option value="Double Elimination" ${data.tournamentType === 'Double Elimination' ? 'selected' : ''}>Double Elimination</option>
+            <option value="Single Elimination" ${data.tournamentType === 'Single Elimination' ? 'selected' : ''}>Single Elimination</option>
+            <option value="Group Stage" ${data.tournamentType === 'Group Stage' ? 'selected' : ''}>Group Stage</option>
+          </select>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label for="tournamentType" class="form-label">Type of Tournament</label>
-        <select class="form-select" id="tournamentType" required>
-          <option value="Round Robin" ${data.tournamentType === 'Round Robin' ? 'selected' : ''}>Round Robin</option>
-          <option value="Double Elimination" ${data.tournamentType === 'Double Elimination' ? 'selected' : ''}>Double Elimination</option>
-          <option value="Single Elimination" ${data.tournamentType === 'Single Elimination' ? 'selected' : ''}>Single Elimination</option>
-          <option value="Group Stage" ${data.tournamentType === 'Group Stage' ? 'selected' : ''}>Group Stage</option>
-        </select>
+      <hr>
+
+      <div class="date-time-group mb-2">
+        <div class="date-time-item">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input type="date" class="form-control compact" id="startDate" value="${data.startDate}" required>
+        </div>
+        <div class="date-time-item">
+          <label for="endDate" class="form-label">End Date</label>
+          <input type="date" class="form-control compact" id="endDate" value="${data.endDate}" required>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label for="startDate" class="form-label">Event Start Date</label>
-        <input type="date" class="form-control" id="startDate" value="${data.startDate}" required>
+      <div class="date-time-group mb-3">
+        <div class="date-time-item">
+          <label for="startTime" class="form-label">Start Time</label>
+          <input type="time" class="form-control compact" id="startTime" value="${data.startTime}" required>
+        </div>
+        <div class="date-time-item">
+          <label for="endTime" class="form-label">End Time</label>
+          <input type="time" class="form-control compact" id="endTime" value="${data.endTime}" required>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label for="endDate" class="form-label">Event End Date</label>
-        <input type="date" class="form-control" id="endDate" value="${data.endDate}" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="startTime" class="form-label">Game Start Time</label>
-        <input type="time" class="form-control" id="startTime" value="${data.startTime}" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="endTime" class="form-label">Game End Time</label>
-        <input type="time" class="form-control" id="endTime" value="${data.endTime}" required>
-      </div>
+      <hr>
 
       <div class="mb-3">
         <label for="location" class="form-label">Event Location</label>
-        <input type="text" class="form-control" id="location" value="${data.location}" required>
+        <input type="text" class="form-control compact" id="location" value="${data.location}" required>
         <button type="button" class="btn btn-sm btn-primary mt-2" id="useMyLocation">
           📍 Use My Current Location
         </button>
         <div id="locationStatus" class="mt-2" style="display: none;"></div>
       </div>
 
+      <hr>
+
       <div class="mb-3">
         <label for="description" class="form-label">Custom Description</label>
-        <textarea class="form-control" id="description" rows="4" required>${data.description}</textarea>
+        <textarea class="form-control compact" id="description" rows="4" required>${data.description}</textarea>
       </div>
     `;
   } else if (currentEventType === 'league') {
     formContainer.innerHTML = `
       <div class="mb-3">
-        <label for="leagueName" class="form-label">League Name</label>
-        <input type="text" class="form-control" id="leagueName" value="${data.leagueName}" required>
+        <label for="leagueName" class="form-label fw-bold">League Name</label>
+        <input type="text" class="form-control compact" id="leagueName" value="${data.leagueName}" required>
       </div>
+
+      <hr>
 
       <div class="mb-3">
         <label for="sportType" class="form-label">Sport Type</label>
-        <select class="form-select" id="sportType" required>
+        <select class="form-select compact" id="sportType" style="max-width: 300px;" required>
           <option value="Baseball" ${data.sportType === 'Baseball' ? 'selected' : ''}>Baseball</option>
           <option value="Basketball" ${data.sportType === 'Basketball' ? 'selected' : ''}>Basketball</option>
           <option value="Hockey" ${data.sportType === 'Hockey' ? 'selected' : ''}>Hockey</option>
@@ -206,52 +220,62 @@ function renderEditForm(data) {
         </select>
       </div>
 
-      <div class="mb-3">
-        <label for="startDate" class="form-label">Event Start Date</label>
-        <input type="date" class="form-control" id="startDate" value="${data.startDate}" required>
+      <hr>
+
+      <div class="date-time-group mb-2">
+        <div class="date-time-item">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input type="date" class="form-control compact" id="startDate" value="${data.startDate}" required>
+        </div>
+        <div class="date-time-item">
+          <label for="endDate" class="form-label">End Date</label>
+          <input type="date" class="form-control compact" id="endDate" value="${data.endDate}" required>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label for="endDate" class="form-label">Event End Date</label>
-        <input type="date" class="form-control" id="endDate" value="${data.endDate}" required>
+      <div class="date-time-group mb-3">
+        <div class="date-time-item">
+          <label for="startTime" class="form-label">Start Time</label>
+          <input type="time" class="form-control compact" id="startTime" value="${data.startTime}" required>
+        </div>
+        <div class="date-time-item">
+          <label for="endTime" class="form-label">End Time</label>
+          <input type="time" class="form-control compact" id="endTime" value="${data.endTime}" required>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label for="startTime" class="form-label">Game Start Time</label>
-        <input type="time" class="form-control" id="startTime" value="${data.startTime}" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="endTime" class="form-label">Game End Time</label>
-        <input type="time" class="form-control" id="endTime" value="${data.endTime}" required>
-      </div>
+      <hr>
 
       <div class="mb-3">
         <label for="location" class="form-label">Event Location</label>
-        <input type="text" class="form-control" id="location" value="${data.location}" required>
+        <input type="text" class="form-control compact" id="location" value="${data.location}" required>
         <button type="button" class="btn btn-sm btn-primary mt-2" id="useMyLocation">
           📍 Use My Current Location
         </button>
         <div id="locationStatus" class="mt-2" style="display: none;"></div>
       </div>
 
+      <hr>
+
       <div class="mb-3">
         <label for="description" class="form-label">Custom Description</label>
-        <textarea class="form-control" id="description" rows="4" required>${data.description}</textarea>
+        <textarea class="form-control compact" id="description" rows="4" required>${data.description}</textarea>
       </div>
     `;
   } else if (currentEventType === 'team') {
     formContainer.innerHTML = `
       <div class="mb-3">
-        <label for="teamName" class="form-label">Team Name</label>
-        <input type="text" class="form-control" id="teamName" value="${data.teamName}" required>
+        <label for="teamName" class="form-label fw-bold">Team Name</label>
+        <input type="text" class="form-control compact" id="teamName" style="max-width: 400px;" value="${data.teamName}" required>
       </div>
+
+      <hr>
 
       <div class="mb-3">
         <label class="form-label">Player(s) on Team</label>
         <div id="playersContainer">
           ${data.players.map((player, index) => `
-            <div class="input-group mb-2">
+            <div class="input-group mb-2" style="max-width: 400px;">
               <input type="text" class="form-control player-input" placeholder="Player ${index + 1} Name" value="${player}" required>
               ${data.players.length > 1 ? '<button type="button" class="btn btn-outline-danger btn-sm remove-player-btn">Remove</button>' : ''}
             </div>
@@ -267,6 +291,7 @@ function renderEditForm(data) {
         const playerCount = playersContainer.querySelectorAll('.player-input').length + 1;
         const newPlayerField = document.createElement('div');
         newPlayerField.className = 'input-group mb-2';
+        newPlayerField.style.maxWidth = '400px';
         newPlayerField.innerHTML = `
           <input type="text" class="form-control player-input" placeholder="Player ${playerCount} Name" required>
           <button type="button" class="btn btn-outline-danger btn-sm remove-player-btn">Remove</button>

@@ -27,7 +27,7 @@
           <a class="nav-link" href="league.html" style="font-size: x-large">Leagues</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="tournament.html" style="font-size: x-large; color:blueviolet">Tournaments</a>
+          <a class="nav-link" href="tournament.html" style="font-size: x-large;">Tournaments</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="stat.html" style="font-size: x-large">Stats</a>
@@ -71,20 +71,34 @@
 </header>
 
 <main class="container my-4">
-  <h1 id="tournamentName" class="text-center mb-4"></h1>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 id="tournamentName" class="mb-0"></h1>
+    <a href="tournament.html" class="btn btn-secondary">Go Back</a>
+  </div>
   
   <div class="card">
     <div class="card-body">
-      <p><strong>Sport:</strong> <span id="sportType"></span></p>
-      <p><strong>Tournament Type:</strong> <span id="tournamentType"></span></p>
-      <p><strong>Start Date:</strong> <span id="startDate"></span></p>
-      <p><strong>End Date:</strong> <span id="endDate"></span></p>
-      <p><strong>Game Times:</strong> <span id="gameTimes"></span></p>
-      <p><strong>Location:</strong> <span id="location"></span></p>
-      <p><strong>Description:</strong> <span id="description"></span></p>
-      <p><strong>Participants:</strong> <span id="participantsCount"></span></p>
-      <p><strong>Participants:</strong> <span id="participantsCount"></span></p>
-      <h5 class="mt-4">Signed-Up Teams</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <p class="mb-2"><strong>Sport:</strong> <span id="sportType"></span></p>
+          <p class="mb-2"><strong>Tournament Type:</strong> <span id="tournamentType"></span></p>
+          <p class="mb-2"><strong>Start Date:</strong> <span id="startDate"></span></p>
+          <p class="mb-2"><strong>End Date:</strong> <span id="endDate"></span></p>
+        </div>
+        <div class="col-md-6">
+          <p class="mb-2"><strong>Game Times:</strong> <span id="gameTimes"></span></p>
+          <p class="mb-2"><strong>Location:</strong> <span id="location"></span></p>
+          <p class="mb-2"><strong>Participants:</strong> <span id="participantsCount"></span></p>
+        </div>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="col-12">
+          <p class="mb-2"><strong>Description:</strong> <span id="description"></span></p>
+        </div>
+      </div>
+
+      <h5 class="mt-4 mb-3">Signed-Up Teams</h5>
       <ul id="participantsList" class="list-group mb-3"></ul>
 
       <div class="mt-3">

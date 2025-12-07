@@ -97,10 +97,14 @@ function displayTeamInfo(teamId) {
 
     document.getElementById('teamHeader').innerHTML = `
         ${team.teamName}: ${leagueName}
-        <div class="mt-2">
-            <button class="btn btn-sm btn-success" onclick="joinTeam('${team._id}', '${team.teamName}')">Join Team</button>
-            <a href="edit.html?type=team&id=${team._id}" class="btn btn-sm btn-primary">Edit Team</a>
-            <button class="btn btn-sm btn-danger" onclick="deleteTeam('${team._id}', '${team.teamName}')">Delete Team</button>
+        <div class="mt-2 d-flex justify-content-between align-items-center">
+            <div>
+                <button class="btn btn-sm btn-success" onclick="joinTeam('${team._id}', '${team.teamName}')">Join Team</button>
+                <a href="edit.html?type=team&id=${team._id}" class="btn btn-sm btn-primary">Edit Team</a>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-danger" onclick="deleteTeam('${team._id}', '${team.teamName}')">Delete Team</button>
+            </div>
         </div>
     `;
 

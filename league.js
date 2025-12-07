@@ -28,21 +28,34 @@ async function deleteLeague(id, leagueName) {
     }
 }
 
+let allLeagues = [];
+let filteredLeagues = [];
+
 async function loadLeagues() {
     try {
         const response = await fetch('/api/leagues');
-        const leagues = await response.json();
-        const container = document.getElementById('leaguesContainer');
-        container.innerHTML = '';
+        allLeagues = await response.json();
+        filteredLeagues = [...allLeagues];
+        displayLeagues();
+    } catch (err) {
+        console.error("Error loading leagues:", err);
+        document.getElementById('leaguesContainer').innerHTML =
+            '<p class="text-danger">Failed to load leagues.</p>';
+    }
+}
 
-        if (!leagues.length) {
-            container.innerHTML = '<p class="text-muted">No leagues found.</p>';
-            return;
-        }
+function displayLeagues() {
+    const container = document.getElementById('leaguesContainer');
+    container.innerHTML = '';
 
-        const localUser = getCurrentUser();
+    if (!filteredLeagues.length) {
+        container.innerHTML = '<p class="text-muted">No leagues found.</p>';
+        return;
+    }
 
-        leagues.forEach(l => {
+    const localUser = getCurrentUser();
+
+    filteredLeagues.forEach(l => {
             const card = document.createElement('div');
             card.className = 'col-md-4';
 
@@ -56,17 +69,7 @@ async function loadLeagues() {
 
             card.innerHTML = `
                 <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-end gap-2 mb-2">
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-success join-btn" data-id="${l._id}" data-name="${l.leagueName}" ${hasJoined ? 'disabled' : ''}>
-                                    ${hasJoined ? 'Joined' : 'Join'}
-                                </button>
-                                <ul class="dropdown-menu join-dropdown" id="join-dropdown-${l._id}"></ul>
-                            </div>
-                            <a href="edit.html?type=league&id=${l._id}" class="btn btn-sm btn-primary">Edit</a>
-                        </div>
-
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">${l.leagueName}</h5>
                         <p><strong>Sport:</strong> ${l.sportType}</p>
                         <p><strong>Start Date:</strong> ${startDate}</p>
@@ -76,7 +79,16 @@ async function loadLeagues() {
                         <p><strong>Description:</strong> ${l.description}</p>
                         <p><strong>Participants:</strong> ${participantCount}</p>
 
-                        <div class="mt-auto d-flex justify-content-end">
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <div class="d-flex gap-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-success join-btn" data-id="${l._id}" data-name="${l.leagueName}" ${hasJoined ? 'disabled' : ''}>
+                                        ${hasJoined ? 'Joined' : 'Join'}
+                                    </button>
+                                    <ul class="dropdown-menu join-dropdown" id="join-dropdown-${l._id}"></ul>
+                                </div>
+                                <a href="edit.html?type=league&id=${l._id}" class="btn btn-sm btn-primary">Edit</a>
+                            </div>
                             <button class="btn btn-sm btn-danger delete-btn" data-id="${l._id}" data-name="${l.leagueName}">
                                 Delete
                             </button>
@@ -133,12 +145,71 @@ async function loadLeagues() {
                 deleteLeague(btn.dataset.id, btn.dataset.name);
             });
         });
+}
 
-    } catch (err) {
-        console.error("Error loading leagues:", err);
-        document.getElementById('leaguesContainer').innerHTML =
-            '<p class="text-danger">Failed to load leagues.</p>';
-    }
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    applyFilters(searchTerm);
+});
+
+// Filter functionality
+document.getElementById('applyFiltersBtn').addEventListener('click', () => {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    applyFilters(searchTerm);
+    bootstrap.Modal.getInstance(document.getElementById('filterModal')).hide();
+});
+
+document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+    document.getElementById('filterSport').value = '';
+    document.getElementById('filterStartDate').value = '';
+    document.getElementById('filterEndDate').value = '';
+    document.getElementById('filterStartTime').value = '';
+    document.getElementById('filterEndTime').value = '';
+    
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    applyFilters(searchTerm);
+    bootstrap.Modal.getInstance(document.getElementById('filterModal')).hide();
+});
+
+function applyFilters(searchTerm = '') {
+    const sport = document.getElementById('filterSport').value;
+    const startDate = document.getElementById('filterStartDate').value;
+    const endDate = document.getElementById('filterEndDate').value;
+    const startTime = document.getElementById('filterStartTime').value;
+    const endTime = document.getElementById('filterEndTime').value;
+
+    filteredLeagues = allLeagues.filter(league => {
+        // Search by name - only filter if searchTerm is not empty
+        if (searchTerm && searchTerm.trim() !== '' && !league.leagueName.toLowerCase().includes(searchTerm)) {
+            return false;
+        }
+
+        // Filter by sport
+        if (sport && league.sportType !== sport) {
+            return false;
+        }
+
+        // Filter by date range
+        if (startDate && new Date(league.startDate) < new Date(startDate)) {
+            return false;
+        }
+        if (endDate && new Date(league.endDate) > new Date(endDate)) {
+            return false;
+        }
+
+        // Filter by time range
+        if (startTime && league.startTime < startTime) {
+            return false;
+        }
+        if (endTime && league.endTime > endTime) {
+            return false;
+        }
+
+        return true;
+    });
+
+    displayLeagues();
 }
 
 loadLeagues();

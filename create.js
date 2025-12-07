@@ -1,4 +1,3 @@
-
 let playerCount = 1;
 let currentCoordinates = null;
 let selectedImageFile = null;
@@ -30,13 +29,8 @@ function useMyLocation(locationInputId, statusElementId) {
   const locationInput = document.getElementById(locationInputId);
   const statusElement = document.getElementById(statusElementId);
   
-  if (!locationInput) {
-    console.error('Location input element not found');
-    return;
-  }
-  
-  if (!statusElement) {
-    console.error('Status element not found');
+  if (!locationInput || !statusElement) {
+    console.error('Location input or status element not found');
     return;
   }
   
@@ -137,50 +131,54 @@ function convertImageToBase64(file) {
 const formTemplates = {
   Tournament: `
     <div class="mb-3">
-      <label for="tournamentName" class="form-label">Tournament Name</label>
-      <input type="text" class="form-control" id="tournamentName" required>
+      <label for="tournamentName" class="form-label fw-bold">Tournament Name</label>
+      <input type="text" class="form-control compact" id="tournamentName" required>
     </div>
+
+    <hr>
 
     <div class="mb-3">
       <label for="tournamentImage" class="form-label">Tournament Image (Optional)</label>
-      <input type="file" class="form-control" id="tournamentImage" accept="image/*">
+      <input type="file" class="form-control compact" id="tournamentImage" accept="image/*">
       <small class="text-muted">Max file size: 5MB. Recommended size: 800x400px</small>
       <img id="imagePreview" style="max-width: 100%; max-height: 200px; margin-top: 10px; display: none;" />
     </div>
 
-    <div class="mb-3">
-      <label for="sportType" class="form-label">Sport Type</label>
-      <select class="form-select" id="sportType" required>
-        <option value="">Select a sport</option>
-        <option value="Baseball">Baseball</option>
-        <option value="Basketball">Basketball</option>
-        <option value="Football">Football</option>
-        <option value="Golf">Golf</option>
-        <option value="Hockey">Hockey</option>
-        <option value="Lacrosse">Lacrosse</option>
-        <option value="Pickleball">Pickleball</option>
-        <option value="Soccer">Soccer</option>
-        <option value="Spikeball">Spikeball</option>
-        <option value="Tennis">Tennis</option>
-        <option value="Volleyball">Volleyball</option>
-        <option value="Wrestling">Wrestling</option>
-      </select>
-    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label for="sportType" class="form-label">Sport Type</label>
+        <select class="form-select compact" id="sportType" required>
+          <option value="">Select a sport</option>
+          <option value="Baseball">Baseball</option>
+          <option value="Basketball">Basketball</option>
+          <option value="Football">Football</option>
+          <option value="Golf">Golf</option>
+          <option value="Hockey">Hockey</option>
+          <option value="Lacrosse">Lacrosse</option>
+          <option value="Pickleball">Pickleball</option>
+          <option value="Soccer">Soccer</option>
+          <option value="Spikeball">Spikeball</option>
+          <option value="Tennis">Tennis</option>
+          <option value="Volleyball">Volleyball</option>
+          <option value="Wrestling">Wrestling</option>
+        </select>
+      </div>
 
-    <div class="mb-3">
-      <label for="tournamentType" class="form-label">Type of Tournament</label>
-      <select class="form-select" id="tournamentType" required>
-        <option value="">Select tournament type</option>
-        <option value="Round Robin">Round Robin</option>
-        <option value="Double Elimination">Double Elimination</option>
-        <option value="Single Elimination">Single Elimination</option>
-        <option value="Group Stage">Group Stage</option>
-      </select>
+      <div class="col-md-6">
+        <label for="tournamentType" class="form-label">Tournament Type</label>
+        <select class="form-select compact" id="tournamentType" required>
+          <option value="">Select tournament type</option>
+          <option value="Round Robin">Round Robin</option>
+          <option value="Double Elimination">Double Elimination</option>
+          <option value="Single Elimination">Single Elimination</option>
+          <option value="Group Stage">Group Stage</option>
+        </select>
+      </div>
     </div>
 
     <div class="mb-3">
       <label for="numTeams" class="form-label">Number of Teams</label>
-      <select class="form-select" id="numTeams">
+      <select class="form-select compact" id="numTeams" style="max-width: 200px;">
         <option value="">Select number of teams</option>
         <option value="4">4 Teams</option>
         <option value="8">8 Teams</option>
@@ -195,57 +193,67 @@ const formTemplates = {
       <p class="text-muted">Bracket structure will be generated after tournament creation</p>
     </div>
 
-    <div class="mb-3">
-      <label for="startDate" class="form-label">Event Start Date</label>
-      <input type="date" class="form-control" id="startDate" required>
+    <hr>
+
+    <div class="date-time-group mb-2">
+      <div class="date-time-item">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" class="form-control compact" id="startDate" required>
+      </div>
+      <div class="date-time-item">
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="date" class="form-control compact" id="endDate" required>
+      </div>
     </div>
 
-    <div class="mb-3">
-      <label for="endDate" class="form-label">Event End Date</label>
-      <input type="date" class="form-control" id="endDate" required>
+    <div class="date-time-group mb-3">
+      <div class="date-time-item">
+        <label for="startTime" class="form-label">Start Time</label>
+        <input type="time" class="form-control compact" id="startTime" required>
+      </div>
+      <div class="date-time-item">
+        <label for="endTime" class="form-label">End Time</label>
+        <input type="time" class="form-control compact" id="endTime" required>
+      </div>
     </div>
 
-    <div class="mb-3">
-      <label for="startTime" class="form-label">Game Start Time</label>
-      <input type="time" class="form-control" id="startTime" required>
-    </div>
-
-    <div class="mb-3">
-      <label for="endTime" class="form-label">Game End Time</label>
-      <input type="time" class="form-control" id="endTime" required>
-    </div>
+    <hr>
 
     <div class="mb-3">
       <label for="location" class="form-label">Event Location</label>
-      <input type="text" class="form-control" id="location" placeholder="Enter location or use your current location" required>
+      <input type="text" class="form-control compact" id="location" placeholder="Enter location or use your current location" required>
       <button type="button" class="btn btn-sm btn-primary mt-2" id="useMyLocation">
         📍 Use My Current Location
       </button>
       <div id="locationStatus" class="mt-2" style="display: none;"></div>
     </div>
 
+    <hr>
+
     <div class="mb-3">
       <label for="description" class="form-label">Custom Description</label>
-      <textarea class="form-control" id="description" rows="4" required></textarea>
+      <textarea class="form-control compact" id="description" rows="4" required></textarea>
     </div>
   `,
 
   League: `
     <div class="mb-3">
-      <label for="leagueName" class="form-label">League Name</label>
-      <input type="text" class="form-control" id="leagueName" required>
+      <label for="leagueName" class="form-label fw-bold">League Name</label>
+      <input type="text" class="form-control compact" id="leagueName" required>
     </div>
+
+    <hr>
 
     <div class="mb-3">
       <label for="leagueImage" class="form-label">League Image (Optional)</label>
-      <input type="file" class="form-control" id="leagueImage" accept="image/*">
+      <input type="file" class="form-control compact" id="leagueImage" accept="image/*">
       <small class="text-muted">Max file size: 5MB. Recommended size: 800x400px</small>
       <img id="imagePreview" style="max-width: 100%; max-height: 200px; margin-top: 10px; display: none;" />
     </div>
 
     <div class="mb-3">
       <label for="sportType" class="form-label">Sport Type</label>
-      <select class="form-select" id="sportType" required>
+      <select class="form-select compact" id="sportType" style="max-width: 300px;" required>
         <option value="">Select a sport</option>
         <option value="Baseball">Baseball</option>
         <option value="Basketball">Basketball</option>
@@ -256,57 +264,67 @@ const formTemplates = {
       </select>
     </div>
 
-    <div class="mb-3">
-      <label for="startDate" class="form-label">Event Start Date</label>
-      <input type="date" class="form-control" id="startDate" required>
+    <hr>
+
+    <div class="date-time-group mb-2">
+      <div class="date-time-item">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" class="form-control compact" id="startDate" required>
+      </div>
+      <div class="date-time-item">
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="date" class="form-control compact" id="endDate" required>
+      </div>
     </div>
 
-    <div class="mb-3">
-      <label for="endDate" class="form-label">Event End Date</label>
-      <input type="date" class="form-control" id="endDate" required>
+    <div class="date-time-group mb-3">
+      <div class="date-time-item">
+        <label for="startTime" class="form-label">Start Time</label>
+        <input type="time" class="form-control compact" id="startTime" required>
+      </div>
+      <div class="date-time-item">
+        <label for="endTime" class="form-label">End Time</label>
+        <input type="time" class="form-control compact" id="endTime" required>
+      </div>
     </div>
 
-    <div class="mb-3">
-      <label for="startTime" class="form-label">Game Start Time</label>
-      <input type="time" class="form-control" id="startTime" required>
-    </div>
-
-    <div class="mb-3">
-      <label for="endTime" class="form-label">Game End Time</label>
-      <input type="time" class="form-control" id="endTime" required>
-    </div>
+    <hr>
 
     <div class="mb-3">
       <label for="location" class="form-label">Event Location</label>
-      <input type="text" class="form-control" id="location" placeholder="Enter location or use your current location" required>
+      <input type="text" class="form-control compact" id="location" placeholder="Enter location or use your current location" required>
       <button type="button" class="btn btn-sm btn-primary mt-2" id="useMyLocation">
         📍 Use My Current Location
       </button>
       <div id="locationStatus" class="mt-2" style="display: none;"></div>
     </div>
 
+    <hr>
+
     <div class="mb-3">
       <label for="description" class="form-label">Custom Description</label>
-      <textarea class="form-control" id="description" rows="4" required></textarea>
+      <textarea class="form-control compact" id="description" rows="4" required></textarea>
     </div>
   `,
 
   Team: `
-  <div class="mb-3">
-    <label for="teamName" class="form-label">Team Name</label>
-    <input type="text" class="form-control" id="teamName" required>
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Player(s) on Team</label>
-    <div id="playersContainer">
-      <div class="input-group mb-2">
-        <input type="text" class="form-control player-input" placeholder="Player 1 Name" required>
-      </div>
+    <div class="mb-3">
+      <label for="teamName" class="form-label fw-bold">Team Name</label>
+      <input type="text" class="form-control compact" id="teamName" style="max-width: 400px;" required>
     </div>
-    <button type="button" class="btn btn-secondary btn-sm" id="addPlayerBtn">Add Another Player</button>
-  </div>
-`
+
+    <hr>
+
+    <div class="mb-3">
+      <label class="form-label">Player(s) on Team</label>
+      <div id="playersContainer">
+        <div class="input-group mb-2" style="max-width: 400px;">
+          <input type="text" class="form-control player-input" placeholder="Player 1 Name" required>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary btn-sm" id="addPlayerBtn">Add Another Player</button>
+    </div>
+  `
 };
 
 async function loadLeagues() {
@@ -390,28 +408,28 @@ function renderForm(eventType) {
   selectedImageFile = null;
   
   if (eventType === 'Team') {
-  playerCount = 1;
+    playerCount = 1;
 
-  const addPlayerBtn = document.getElementById('addPlayerBtn');
-  if (addPlayerBtn) {
-    addPlayerBtn.addEventListener('click', () => {
-      playerCount++;
-      const playersContainer = document.getElementById('playersContainer');
-      const newPlayerField = document.createElement('div');
-      newPlayerField.className = 'input-group mb-2';
-      newPlayerField.innerHTML = `
-        <input type="text" class="form-control player-input" placeholder="Player ${playerCount} Name" required>
-        <button type="button" class="btn btn-outline-danger btn-sm remove-player-btn">Remove</button>
-      `;
-      playersContainer.appendChild(newPlayerField);
+    const addPlayerBtn = document.getElementById('addPlayerBtn');
+    if (addPlayerBtn) {
+      addPlayerBtn.addEventListener('click', () => {
+        playerCount++;
+        const playersContainer = document.getElementById('playersContainer');
+        const newPlayerField = document.createElement('div');
+        newPlayerField.className = 'input-group mb-2';
+        newPlayerField.style.maxWidth = '400px';
+        newPlayerField.innerHTML = `
+          <input type="text" class="form-control player-input" placeholder="Player ${playerCount} Name" required>
+          <button type="button" class="btn btn-outline-danger btn-sm remove-player-btn">Remove</button>
+        `;
+        playersContainer.appendChild(newPlayerField);
 
-      newPlayerField.querySelector('.remove-player-btn').addEventListener('click', () => {
-        newPlayerField.remove();
+        newPlayerField.querySelector('.remove-player-btn').addEventListener('click', () => {
+          newPlayerField.remove();
+        });
       });
-    });
-  }
-}
- else if (eventType === 'Tournament' || eventType === 'League') {
+    }
+  } else if (eventType === 'Tournament' || eventType === 'League') {
     requestAnimationFrame(() => {
       setupLocationButton();
       setupImageUpload();
@@ -475,17 +493,16 @@ document.getElementById('addEventForm').addEventListener('submit', async (e) => 
     
     endpoint = '/api/leagues';
   } else if (eventType === 'Team') {
-  const players = Array.from(document.querySelectorAll('.player-input'))
-    .map(input => input.value.trim())
-    .filter(name => name !== '');
+    const players = Array.from(document.querySelectorAll('.player-input'))
+      .map(input => input.value.trim())
+      .filter(name => name !== '');
 
-  eventData = {
-    teamName: document.getElementById('teamName').value.trim(),
-    players: players
-  };
-  endpoint = '/api/teams';
-}
-
+    eventData = {
+      teamName: document.getElementById('teamName').value.trim(),
+      players: players
+    };
+    endpoint = '/api/teams';
+  }
 
   try {
     const response = await fetch(endpoint, {

@@ -70,9 +70,81 @@
        Stay tuned for the latest updates and announcements regarding leagues!
     </p>
 
+    <!-- Search and Filter Section -->
+    <div class="row mb-4">
+        <div class="col-md-10">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search leagues by name...">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">
+                <i class="bi bi-filter"></i> Filters
+            </button>
+        </div>
+    </div>
+
     <div id="leaguesContainer" class="row g-3">
     </div>
 </main>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filter Leagues</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="filterSport" class="form-label">Sport Type</label>
+          <select class="form-select" id="filterSport">
+            <option value="">All Sports</option>
+            <option value="Soccer">Soccer</option>
+            <option value="Basketball">Basketball</option>
+            <option value="Baseball">Baseball</option>
+            <option value="Football">Football</option>
+            <option value="Volleyball">Volleyball</option>
+            <option value="Tennis">Tennis</option>
+            <option value="Hockey">Hockey</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Date Range</label>
+          <div class="row">
+            <div class="col-6">
+              <label for="filterStartDate" class="form-label">Start Date (From)</label>
+              <input type="date" class="form-control" id="filterStartDate">
+            </div>
+            <div class="col-6">
+              <label for="filterEndDate" class="form-label">End Date (To)</label>
+              <input type="date" class="form-control" id="filterEndDate">
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Time Range</label>
+          <div class="row">
+            <div class="col-6">
+              <label for="filterStartTime" class="form-label">Start Time (From)</label>
+              <input type="time" class="form-control" id="filterStartTime">
+            </div>
+            <div class="col-6">
+              <label for="filterEndTime" class="form-label">End Time (To)</label>
+              <input type="time" class="form-control" id="filterEndTime">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="clearFiltersBtn">Clear Filters</button>
+        <button type="button" class="btn btn-primary" id="applyFiltersBtn">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer style="text-align: center; background-color: black; color: white">
     <p>&copy; 2024 Squad Sync. All rights reserved.</p>
