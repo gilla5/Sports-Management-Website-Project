@@ -85,7 +85,7 @@
             <option value="Teams">Teams</option>
           </select>
     </div>
-    <section class="mb-5">
+    <section id="tournamentsSection" class="mb-5">
         <h2>My Tournaments <span class="badge bg-primary" id="tournamentCount">0</span></h2>
         <div id="myTournamentsContainer" class="row g-3">
             <div class="col-12 text-center text-muted">
@@ -94,7 +94,7 @@
         </div>
     </section>
 
-    <section class="mb-5">
+    <section id="leaguesSection" class="mb-5">
         <h2>My Leagues <span class="badge bg-success" id="leagueCount">0</span></h2>
         <div id="myLeaguesContainer" class="row g-3">
             <div class="col-12 text-center text-muted">
@@ -103,7 +103,7 @@
         </div>
     </section>
 
-    <section class="mb-5">
+    <section id="teamsSection" class="mb-5">
         <h2>My Teams <span class="badge bg-info" id="teamCount">0</span></h2>
         <div id="myTeamsContainer" class="row g-3">
             <div class="col-12 text-center text-muted">
@@ -151,7 +151,26 @@
         navbar.classList.remove("shrink");
     }
 });
+function applyFilter(category) {
+    document.getElementById("tournamentsSection").style.display =
+        category === "Tournaments" ? "block" : "none";
+
+    document.getElementById("leaguesSection").style.display =
+        category === "Leagues" ? "block" : "none";
+
+    document.getElementById("teamsSection").style.display =
+        category === "Teams" ? "block" : "none";
+}
+
+document.getElementById("Events").addEventListener("change", function () {
+    applyFilter(this.value);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    applyFilter("Tournaments");
+});
   </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
+
 </html>

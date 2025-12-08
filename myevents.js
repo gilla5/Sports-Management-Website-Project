@@ -1,13 +1,13 @@
 function getCurrentUser() {
     const userStr = localStorage.getItem('squadSyncCurrentUser');
     if (!userStr) {
-        return {
-            username: 'Guest',
-            email: 'guest@squadsync.com'
-        };
+        return { username: 'Guest', email: 'guest@squadsync.com', fullName: 'Guest' };
     }
-    return JSON.parse(userStr);
+    const user = JSON.parse(userStr);
+    if (!user.fullName) user.fullName = user.username;
+    return user;
 }
+
 
 function formatTimeTo12Hour(time) {
     if (!time) return 'N/A';
@@ -182,50 +182,41 @@ async function loadMyTeams(user) {
         const response = await fetch('/api/teams');
         const teams = await response.json();
 
-        const myTeams = teams.filter(t => {
-            if (!t.players || !Array.isArray(t.players)) return false;
-            return t.players.some(p => p.toLowerCase().includes(user.username.toLowerCase()));
-        });
-
         const container = document.getElementById('myTeamsContainer');
-        document.getElementById('teamCount').textContent = myTeams.length;
+        document.getElementById('teamCount').textContent = teams.length;
 
-        if (myTeams.length === 0) {
-            container.innerHTML = '<div class="col-12 text-center text-muted"><p>You haven\'t joined any teams yet.</p></div>';
+        if (!teams.length) {
+            container.innerHTML = '<div class="col-12 text-center text-muted"><p>No teams found.</p></div>';
             return;
         }
 
         container.innerHTML = '';
-        myTeams.forEach(t => {
-            const card = document.createElement('div');
-            card.className = 'col-md-4';
-            
-            const leagueName = t.leagueId ? (t.leagueId.leagueName || 'Unknown League') : 'Unknown League';
-            
-            card.innerHTML = `
-                <div class="card h-100 border-info">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="card-title mb-0">${t.teamName}</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text"><strong>League:</strong> ${leagueName}</p>
-                        <p class="card-text"><strong>Players:</strong> ${t.players.length}</p>
-                        <p class="card-text"><strong>Team Members:</strong></p>
-                        <ul class="list-unstyled ms-3">
-                            ${t.players.slice(0, 5).map(player => `<li>• ${player}</li>`).join('')}
-                            ${t.players.length > 5 ? `<li>• ... and ${t.players.length - 5} more</li>` : ''}
-                        </ul>
-                        <p class="card-text text-success"><strong>✓ You're on this team!</strong></p>
+        teams.forEach(t => {
+            container.innerHTML += `
+                <div class="col-md-4">
+                    <div class="card h-100 border-info">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0">${t.teamName}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><strong>Players:</strong> ${t.players.length}</p>
+                            <ul class="list-unstyled ms-3">
+                                ${t.players.slice(0, 5).map(player => `<li>• ${player}</li>`).join('')}
+                                ${t.players.length > 5 ? `<li>• ... and ${t.players.length - 5} more</li>` : ''}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             `;
-            container.appendChild(card);
         });
     } catch (err) {
         console.error('Error loading teams:', err);
         document.getElementById('myTeamsContainer').innerHTML = '<div class="col-12"><p class="text-danger">Failed to load teams.</p></div>';
     }
 }
+
+
+
 
 // Load events when page loads
 document.addEventListener('DOMContentLoaded', loadMyEvents);

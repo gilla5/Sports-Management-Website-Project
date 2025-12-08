@@ -1,3 +1,4 @@
+// Redirect to create page
 document.getElementById("createLeagueBtn").addEventListener("click", () => {
     window.location.href = "/create.html";
 });
@@ -5,22 +6,16 @@ document.getElementById("createLeagueBtn").addEventListener("click", () => {
 let leagues = [];
 let teams = [];
 
+// Delete a team
 async function deleteTeam(id, teamName) {
-    if (!confirm(`Are you sure you want to delete "${teamName}"? This action cannot be undone.`)) {
-        return;
-    }
+    if (!confirm(`Are you sure you want to delete "${teamName}"? This action cannot be undone.`)) return;
 
     try {
-        const response = await fetch(`/api/teams/${id}`, {
-            method: 'DELETE'
-        });
-
+        const response = await fetch(`/api/teams/${id}`, { method: 'DELETE' });
         if (response.ok) {
             alert('Team deleted successfully!');
             const leagueSelect = document.getElementById('leagueSelect');
-            if (leagueSelect.value) {
-                loadTeamsForLeague(leagueSelect.value);
-            }
+            if (leagueSelect.value) loadTeamsForLeague(leagueSelect.value);
             clearTeamInfo();
         } else {
             alert('Failed to delete team.');
@@ -31,22 +26,24 @@ async function deleteTeam(id, teamName) {
     }
 }
 
+// Load leagues
 async function loadLeagues() {
     try {
-        const response = await fetch('/api/leagues');
-        leagues = await response.json();
+        const res = await fetch('/api/leagues');
+        const data = await res.json();
+        leagues = Array.isArray(data) ? data : data.leagues || [];
 
         const leagueSelect = document.getElementById('leagueSelect');
         leagueSelect.innerHTML = '<option value="">Select a league</option>';
 
-        if (leagues.length === 0) {
+        if (!leagues.length) {
             leagueSelect.innerHTML = '<option value="">No leagues available</option>';
             return;
         }
 
         leagues.forEach(league => {
             const option = document.createElement('option');
-            option.value = league._id;
+            option.value = league._id || league.id;
             option.textContent = league.leagueName || league.title || 'Unnamed League';
             leagueSelect.appendChild(option);
         });
@@ -55,25 +52,26 @@ async function loadLeagues() {
     }
 }
 
+// Load teams for a selected league
 async function loadTeamsForLeague(leagueId) {
     try {
-        const response = await fetch(`/api/leagues/${leagueId}/teams`);
-        teams = await response.json();
+        const res = await fetch(`/api/leagues/${leagueId}/teams`);
+        const data = await res.json();
+        teams = Array.isArray(data) ? data : data.teams || [];
 
         const teamSelect = document.getElementById('teamSelect');
         teamSelect.innerHTML = '<option value="">Select a team</option>';
-        teamSelect.disabled = false;
+        teamSelect.disabled = !teams.length;
 
-        if (teams.length === 0) {
+        if (!teams.length) {
             teamSelect.innerHTML = '<option value="">No teams in this league</option>';
-            teamSelect.disabled = true;
             clearTeamInfo();
             return;
         }
 
         teams.forEach(team => {
             const option = document.createElement('option');
-            option.value = team._id;
+            option.value = team._id || team.id;
             option.textContent = team.teamName || 'Unnamed Team';
             teamSelect.appendChild(option);
         });
@@ -84,26 +82,23 @@ async function loadTeamsForLeague(leagueId) {
     }
 }
 
+// Display selected team info
 function displayTeamInfo(teamId) {
-    const team = teams.find(t => t._id === teamId);
-    
-    if (!team) {
-        clearTeamInfo();
-        return;
-    }
+    const team = teams.find(t => t._id === teamId || t.id === teamId);
+    if (!team) return clearTeamInfo();
 
-    const league = leagues.find(l => l._id === team.leagueId);
+    const league = leagues.find(l => l._id === team.leagueId || l._id === team.league);
     const leagueName = league ? (league.leagueName || league.title || 'Unknown League') : 'Unknown League';
 
     document.getElementById('teamHeader').innerHTML = `
         ${team.teamName}: ${leagueName}
         <div class="mt-2 d-flex justify-content-between align-items-center">
             <div>
-                <button class="btn btn-sm btn-success" onclick="joinTeam('${team._id}', '${team.teamName}')">Join Team</button>
-                <a href="edit.html?type=team&id=${team._id}" class="btn btn-sm btn-primary">Edit Team</a>
+                <button class="btn btn-sm btn-success" onclick="joinTeam('${team._id || team.id}', '${team.teamName}')">Join Team</button>
+                <a href="edit.html?type=team&id=${team._id || team.id}" class="btn btn-sm btn-primary">Edit Team</a>
             </div>
             <div>
-                <button class="btn btn-sm btn-danger" onclick="deleteTeam('${team._id}', '${team.teamName}')">Delete Team</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteTeam('${team._id || team.id}', '${team.teamName}')">Delete Team</button>
             </div>
         </div>
     `;
@@ -111,12 +106,13 @@ function displayTeamInfo(teamId) {
     const tableBody = document.getElementById('teamRosterBody');
     tableBody.innerHTML = '';
 
-    if (!team.players || team.players.length === 0) {
+    const players = Array.isArray(team.players) ? team.players : [];
+    if (!players.length) {
         tableBody.innerHTML = '<tr><td colspan="4" class="text-center">No players on this team</td></tr>';
         return;
     }
 
-    team.players.forEach((playerName, index) => {
+    players.forEach(playerName => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${playerName}</td>
@@ -128,32 +124,29 @@ function displayTeamInfo(teamId) {
     });
 }
 
+// Clear displayed team info
 function clearTeamInfo() {
     document.getElementById('teamHeader').textContent = 'Select a team to view roster';
     document.getElementById('teamRosterBody').innerHTML = '<tr><td colspan="4" class="text-center text-muted">No team selected</td></tr>';
 }
 
-document.getElementById('leagueSelect').addEventListener('change', (e) => {
+// Event listeners
+document.getElementById('leagueSelect').addEventListener('change', e => {
     const leagueId = e.target.value;
     const teamSelect = document.getElementById('teamSelect');
-    
-    if (leagueId) {
-        loadTeamsForLeague(leagueId);
-    } else {
+    if (leagueId) loadTeamsForLeague(leagueId);
+    else {
         teamSelect.innerHTML = '<option value="">Select a league first</option>';
         teamSelect.disabled = true;
         clearTeamInfo();
     }
 });
 
-document.getElementById('teamSelect').addEventListener('change', (e) => {
+document.getElementById('teamSelect').addEventListener('change', e => {
     const teamId = e.target.value;
-    
-    if (teamId) {
-        displayTeamInfo(teamId);
-    } else {
-        clearTeamInfo();
-    }
+    if (teamId) displayTeamInfo(teamId);
+    else clearTeamInfo();
 });
 
+// Initial load
 loadLeagues();
