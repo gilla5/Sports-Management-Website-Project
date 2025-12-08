@@ -127,6 +127,7 @@ function displayTournaments() {
         
         card.innerHTML = `
             <div class="card h-100">
+                ${imageHTML}                
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">
                         <a href="tournament_detail.html?id=${t._id}">${t.tournamentName || 'Unnamed Tournament'}</a>
