@@ -69,6 +69,7 @@ function displayLeagues() {
 
             card.innerHTML = `
                 <div class="card h-100">
+                    ${imageHTML}                    
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">${l.leagueName}</h5>
                         <p><strong>Sport:</strong> ${l.sportType}</p>
