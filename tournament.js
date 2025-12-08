@@ -121,6 +121,10 @@ function displayTournaments() {
         const participantCount = t.participants ? t.participants.length : 0;
         const maxParticipants = t.numTeams || '∞';
 
+        const imageHTML = t.image ? 
+            `<img src="${t.image}" class="tournament-image" alt="${t.tournamentName}" 
+            onerror="this.style.display='none'">` : '';
+        
         card.innerHTML = `
             <div class="card h-100">
                 <div class="card-body d-flex flex-column">
