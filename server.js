@@ -8,7 +8,8 @@ import { fileURLToPath } from 'url';
 dotenv.config();
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // Increase limit for base64 images
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +30,7 @@ const leagueSchema = new mongoose.Schema({
   location: { type: String, required: true },
   coordinates: { type: Object, required: false },
   description: { type: String, required: true },
+  image: { type: String, required: false }, // ADD THIS LINE
   participants: [{ 
     username: String, 
     email: String,
@@ -52,6 +54,7 @@ const tournamentSchema = new mongoose.Schema({
   location: { type: String, required: true },
   coordinates: { type: Object, required: false },
   description: { type: String, required: true },
+  image: { type: String, required: false }, // ADD THIS LINE
   participants: [{ 
     username: String, 
     email: String,
@@ -289,7 +292,6 @@ app.put('/api/teams/:id', async (req, res) => {
   }
 });
 
-// ADDED: New endpoint to specifically update team's leagueId
 app.patch('/api/teams/:id/league', async (req, res) => {
   try {
     console.log('Setting leagueId for team:', req.params.id);
