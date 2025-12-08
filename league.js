@@ -56,96 +56,101 @@ function displayLeagues() {
     const localUser = getCurrentUser();
 
     filteredLeagues.forEach(l => {
-            const card = document.createElement('div');
-            card.className = 'col-md-4';
+        const card = document.createElement('div');
+        card.className = 'col-md-4';
 
-            const startDate = new Date(l.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            const endDate = new Date(l.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            const participantCount = l.participants?.length ?? 0;
+        const startDate = new Date(l.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const endDate = new Date(l.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const participantCount = l.participants?.length ?? 0;
 
-            const hasJoined = localUser.username !== 'Guest' 
-                ? l.participants?.some(p => p.username === localUser.username) 
-                : false;
+        const hasJoined = localUser.username !== 'Guest' 
+            ? l.participants?.some(p => p.username === localUser.username) 
+            : false;
 
-            card.innerHTML = `
-                <div class="card h-100">
-                    ${imageHTML}                    
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">${l.leagueName}</h5>
-                        <p><strong>Sport:</strong> ${l.sportType}</p>
-                        <p><strong>Start Date:</strong> ${startDate}</p>
-                        <p><strong>End Date:</strong> ${endDate}</p>
-                        <p><strong>Game Times:</strong> ${formatTimeTo12Hour(l.startTime)} - ${formatTimeTo12Hour(l.endTime)}</p>
-                        <p><strong>Location:</strong> ${l.location}</p>
-                        <p><strong>Description:</strong> ${l.description}</p>
-                        <p><strong>Participants:</strong> ${participantCount}</p>
+        // ADD THIS: Define imageHTML before using it
+        const imageHTML = l.image ? 
+            `<img src="${l.image}" class="league-image" alt="${l.leagueName}" 
+            onerror="this.style.display='none'">` : '';
 
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <div class="d-flex gap-2">
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-success join-btn" data-id="${l._id}" data-name="${l.leagueName}" ${hasJoined ? 'disabled' : ''}>
-                                        ${hasJoined ? 'Joined' : 'Join'}
-                                    </button>
-                                    <ul class="dropdown-menu join-dropdown" id="join-dropdown-${l._id}"></ul>
-                                </div>
-                                <a href="edit.html?type=league&id=${l._id}" class="btn btn-sm btn-primary">Edit</a>
+        card.innerHTML = `
+            <div class="card h-100">
+                ${imageHTML}                    
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">${l.leagueName}</h5>
+                    <p><strong>Sport:</strong> ${l.sportType}</p>
+                    <p><strong>Start Date:</strong> ${startDate}</p>
+                    <p><strong>End Date:</strong> ${endDate}</p>
+                    <p><strong>Game Times:</strong> ${formatTimeTo12Hour(l.startTime)} - ${formatTimeTo12Hour(l.endTime)}</p>
+                    <p><strong>Location:</strong> ${l.location}</p>
+                    <p><strong>Description:</strong> ${l.description}</p>
+                    <p><strong>Participants:</strong> ${participantCount}</p>
+
+                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-2">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-success join-btn" data-id="${l._id}" data-name="${l.leagueName}" ${hasJoined ? 'disabled' : ''}>
+                                    ${hasJoined ? 'Joined' : 'Join'}
+                                </button>
+                                <ul class="dropdown-menu join-dropdown" id="join-dropdown-${l._id}"></ul>
                             </div>
-                            <button class="btn btn-sm btn-danger delete-btn" data-id="${l._id}" data-name="${l.leagueName}">
-                                Delete
-                            </button>
+                            <a href="edit.html?type=league&id=${l._id}" class="btn btn-sm btn-primary">Edit</a>
                         </div>
+                        <button class="btn btn-sm btn-danger delete-btn" data-id="${l._id}" data-name="${l.leagueName}">
+                            Delete
+                        </button>
                     </div>
                 </div>
-            `;
+            </div>
+        `;
 
-            container.appendChild(card);
+        container.appendChild(card);
 
-            const joinBtn = card.querySelector('.join-btn');
-            updateJoinButtonState(joinBtn, l.participants);
-        });
+        const joinBtn = card.querySelector('.join-btn');
+        updateJoinButtonState(joinBtn, l.participants);
+    });
 
-        // Add join dropdown functionality
-        document.querySelectorAll('.join-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const leagueId = e.target.dataset.id;
-                const leagueName = e.target.dataset.name;
-                const dropdown = document.getElementById(`join-dropdown-${leagueId}`);
-                dropdown.innerHTML = '';
+    // Add join dropdown functionality
+    document.querySelectorAll('.join-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const leagueId = e.target.dataset.id;
+            const leagueName = e.target.dataset.name;
+            const dropdown = document.getElementById(`join-dropdown-${leagueId}`);
+            dropdown.innerHTML = '';
 
-                try {
-                    const res = await fetch('/api/teams');
-                    const allTeams = await res.json();
+            try {
+                const res = await fetch('/api/teams');
+                const allTeams = await res.json();
 
-                    if (!allTeams.length) {
+                if (!allTeams.length) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="dropdown-item text-muted">No teams available</span>`;
+                    dropdown.appendChild(li);
+                } else {
+                    allTeams.forEach(team => {
                         const li = document.createElement('li');
-                        li.innerHTML = `<span class="dropdown-item text-muted">No teams available</span>`;
-                        dropdown.appendChild(li);
-                    } else {
-                        allTeams.forEach(team => {
-                            const li = document.createElement('li');
-                            li.innerHTML = `<a class="dropdown-item" href="#">${team.teamName}</a>`;
-                            li.addEventListener('click', () => {
-                                joinLeague(leagueId, leagueName, team._id, team.teamName);
-                                dropdown.classList.remove('show');
-                            });
-                            dropdown.appendChild(li);
+                        li.innerHTML = `<a class="dropdown-item" href="#">${team.teamName}</a>`;
+                        li.addEventListener('click', () => {
+                            joinLeague(leagueId, leagueName, team._id, team.teamName);
+                            dropdown.classList.remove('show');
                         });
-                    }
-
-                    dropdown.classList.toggle('show');
-                } catch (err) {
-                    console.error('Error loading teams:', err);
-                    alert('Failed to load teams.');
+                        dropdown.appendChild(li);
+                    });
                 }
-            });
-        });
 
-        // Delete button functionality
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                deleteLeague(btn.dataset.id, btn.dataset.name);
-            });
+                dropdown.classList.toggle('show');
+            } catch (err) {
+                console.error('Error loading teams:', err);
+                alert('Failed to load teams.');
+            }
         });
+    });
+
+    // Delete button functionality
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            deleteLeague(btn.dataset.id, btn.dataset.name);
+        });
+    });
 }
 
 // Search functionality
