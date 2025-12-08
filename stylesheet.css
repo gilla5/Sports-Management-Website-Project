@@ -107,6 +107,23 @@ footer {
     border-bottom: 3px solid #2c3e50 !important;
 }
 
+.navbar-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.navbar-nav .nav-item {
+    flex: 1;
+    text-align: center;
+}
+
+.navbar-nav .nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+}
+
 .nav-link {
     color: #2c3e50 !important;
     font-weight: 500;
@@ -132,6 +149,31 @@ footer {
 .btn-primary:hover {
     background-color: #1f5c87;
     border-color: #1f5c87;
+}
+
+.btn-warning {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #000 !important;
+    font-weight: 500;
+}
+
+.btn-warning:hover {
+    background-color: #ffca2c !important;
+    border-color: #ffca2c !important;
+    color: #000 !important;
+}
+
+a.btn-warning, button.btn-warning, .btn-warning {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+a.btn-warning:hover, button.btn-warning:hover, .btn-warning:hover {
+    background-color: #ffca2c !important;
+    border-color: #ffca2c !important;
+    color: #000 !important;
 }
 
 .btn-secondary {
@@ -322,4 +364,27 @@ body {
     background-color: rgba(255, 255, 255, 0.95);
     border-radius: 8px;
     overflow: hidden;
+}
+
+@keyframes slideIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+    
+    .navbar-nav .nav-item {
+        text-align: left;
+        width: 100%;
+    }
 }
